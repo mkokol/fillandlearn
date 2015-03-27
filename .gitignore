@@ -1,3 +1,5 @@
 /vendor/**/.git
+logs
+build/database
 .DS_Store
 .idea

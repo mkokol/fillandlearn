@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Vocabulary Builder" default="main" basedir=".">
+
+	<property file="./build/templates/default.properties" />
+
+	<target name="main">
+        <echo message="+------------------------------------------+"/>
+        <echo message="| Building The Project.                    |"/>
+        <echo message="+------------------------------------------+"/>
+
+        <phing phingfile="${project.basedir}/build/phing/logs.xml" target="logs" />
+        <phing phingfile="${project.basedir}/build/phing/database.xml" target="database" />
+    </target>
+
+</project>

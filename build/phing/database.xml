@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="database">
+ 
+    <target name="database">
+
+        <echo msg="Initialising database..." />
+ 
+        <tstamp/>
+
+        <echo msg="host: ${db.host}" />
+
+        <exec
+            command="mysql -h${db.host} -u${db.user} -p${db.password} ${db.database} &lt; ${project.basedir}/build/templates/database.sql"
+            dir="${project.basedir}"
+            checkreturn="true" />
+
+        <echo msg="Deploying database..." />
+ 
+        
+        <property name="build.dbdeploy.deployfile" value="${project.basedir}/build/database/deploy-db-${DSTAMP}${TSTAMP}.sql" />
+        <property name="build.dbdeploy.undofile" value="${project.basedir}/build/database/undo-db-${DSTAMP}${TSTAMP}.sql" />
+ 
+        <echo message="Database undo file ${build.dbdeploy.undofile}" />
+ 
+        <dbdeploy
+            url="mysql:host=${db.host};dbname=${db.database}"
+            userid="${db.user}"
+            password="${db.password}"
+            dir="${project.basedir}/build/patches/"
+            outputfile="${build.dbdeploy.deployfile}"
+            undooutputfile="${build.dbdeploy.undofile}" />
+
+        <exec
+            command="mysql -h${db.host} -u${db.user} -p${db.password} ${db.database} &lt; ${build.dbdeploy.deployfile}"
+            dir="${project.basedir}"
+            checkreturn="true" />
+
+    </target>
+ 
+</project>
