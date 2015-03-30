@@ -811,6 +811,7 @@ return array(
     'SmartyTask' => $vendorDir . '/phing/phing/classes/phing/tasks/ext/SmartyTask.php',
     'SocketCondition' => $vendorDir . '/phing/phing/classes/phing/tasks/system/condition/SocketCondition.php',
     'SourceFileScanner' => $vendorDir . '/phing/phing/classes/phing/util/SourceFileScanner.php',
+    'SqlFormatter' => $vendorDir . '/jdorn/sql-formatter/lib/SqlFormatter.php',
     'Ssh2MethodConnectionParam' => $vendorDir . '/phing/phing/classes/phing/tasks/ext/ssh/Ssh2MethodConnectionParam.php',
     'Ssh2MethodParam' => $vendorDir . '/phing/phing/classes/phing/tasks/ext/ssh/Ssh2MethodParam.php',
     'SshTask' => $vendorDir . '/phing/phing/classes/phing/tasks/ext/ssh/SshTask.php',
