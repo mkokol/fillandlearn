@@ -25,7 +25,7 @@ class BundleGeneratorTest extends GeneratorTest
             'Resources/views/Default/index.html.twig',
             'Resources/config/routing.yml',
             'Tests/Controller/DefaultControllerTest.php',
-            'Resources/config/services.yml',
+            'Resources/config/services.xml',
             'DependencyInjection/Configuration.php',
             'DependencyInjection/FooBarExtension.php',
         );

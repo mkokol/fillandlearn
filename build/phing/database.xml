@@ -10,15 +10,18 @@
         <echo msg="host: ${db.host}" />
 
         <exec
-            command="mysql -h${db.host} -u${db.user} -p${db.password} ${db.database} &lt; ${project.basedir}/build/templates/database.sql"
+            command="mysql -h${db.host} -u${db.user} -p${db.password} &lt; ${project.basedir}/build/templates/database.sql"
             dir="${project.basedir}"
             checkreturn="true" />
 
         <echo msg="Deploying database..." />
- 
-        
-        <property name="build.dbdeploy.deployfile" value="${project.basedir}/build/database/deploy-db-${DSTAMP}${TSTAMP}.sql" />
-        <property name="build.dbdeploy.undofile" value="${project.basedir}/build/database/undo-db-${DSTAMP}${TSTAMP}.sql" />
+
+        <property
+            name="build.dbdeploy.deployfile"
+            value="${project.basedir}/build/database/deploy-db-${DSTAMP}${TSTAMP}.sql" />
+        <property
+            name="build.dbdeploy.undofile"
+            value="${project.basedir}/build/database/undo-db-${DSTAMP}${TSTAMP}.sql" />
  
         <echo message="Database undo file ${build.dbdeploy.undofile}" />
  
@@ -26,6 +29,7 @@
             url="mysql:host=${db.host};dbname=${db.database}"
             userid="${db.user}"
             password="${db.password}"
+            checkall="true"
             dir="${project.basedir}/build/patches/"
             outputfile="${build.dbdeploy.deployfile}"
             undooutputfile="${build.dbdeploy.undofile}" />

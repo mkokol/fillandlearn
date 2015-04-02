@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS `vocabulary_builder` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `vocabulary_builder`;
+
 CREATE TABLE IF NOT EXISTS changelog (
     change_number BIGINT NOT NULL,
     delta_set VARCHAR(10) NOT NULL,
