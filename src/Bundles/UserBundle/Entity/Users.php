@@ -6,13 +6,14 @@ use Bundles\GeneralBundle\Entity\UpdatedOnEntityTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
-class Users
+class Users implements UserInterface
 {
     use CreatedOnEntityTrait;
     use UpdatedOnEntityTrait;
@@ -27,10 +28,10 @@ class Users
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="user_name")
+     * @ORM\Column(type="string", name="name")
      * @Assert\NotBlank()
      */
-    private $userName;
+    private $name;
 
     /**
      * @var string
@@ -75,16 +76,16 @@ class Users
         return $this->id;
     }
 
-    /** @param string $userName */
-    public function setUserName($userName)
+    /** @param string $name */
+    public function setName($name)
     {
-        $this->userName = $userName;
+        $this->name = $name;
     }
 
     /** @return string */
-    public function getUserName()
+    public function getName()
     {
-        return $this->userName;
+        return $this->name;
     }
 
     /** @param string $email */
@@ -132,6 +133,29 @@ class Users
     /** @return Roles[] */
     public function getRoles()
     {
-        return $this->roles->toArray();
+        $result = [];
+        $roles = $this->roles->toArray();
+
+        /** @var Roles $role */
+        foreach ($roles as $role) {
+            $result[] = $role->getName();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
+
     }
 }

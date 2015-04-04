@@ -1,5 +1,4 @@
 <?php
-
 namespace Bundles\HomeBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

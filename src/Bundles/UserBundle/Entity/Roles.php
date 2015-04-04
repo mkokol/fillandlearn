@@ -21,4 +21,15 @@ class Roles
      */
     private $name;
 
+    /** @return integer */
+    public function getRoleId()
+    {
+        return $this->roleId;
+    }
+
+    /** @return string */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

@@ -13,5 +13,6 @@ class LogoutController extends Controller
      */
     public function getAction()
     {
+        return [];
     }
 }

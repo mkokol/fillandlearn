@@ -13,7 +13,7 @@ class RegistrationController extends Controller
 {
     /**
      * @Route("", name="user_registration")
-     * @Template("UserBundle:Login:get.html.twig")
+     * @Template("UserBundle:Registration:get.html.twig")
      * @Method({"GET"})
      */
     public function getAction(Request $request)
@@ -27,7 +27,7 @@ class RegistrationController extends Controller
 
     /**
      * @Route("", name="user_registration_post")
-     * @Template("UserBundle:Login:get.html.twig")
+     * @Template("UserBundle:Registration:get.html.twig")
      * @Method({"POST"})
      */
     public function postAction(Request $request)

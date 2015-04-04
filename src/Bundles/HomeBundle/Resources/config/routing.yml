@@ -2,3 +2,5 @@ home_homepage:
     resource: "@HomeBundle/Controller/HomeController.php"
     prefix:   /
     type:     annotation
+
+

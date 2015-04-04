@@ -9,6 +9,11 @@
             class="Bundles\UserBundle\Form\UserRegistrationFormType">
             <tag name="form.type" alias="user_registration" />
         </service>
+
+        <service id="app.form.type.user_login"
+            class="Bundles\UserBundle\Form\UserLoginFormType">
+            <tag name="form.type" alias="user_login" />
+        </service>
     </services>
 
 </container>
