@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>{% block title %}Vocabulary builder.{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    </head>
+    <body>
+        <div>
+            <a href="{{ path('home') }}">Home</a> |
+            {% if not is_granted('ROLE_USER') %}
+                <a href="{{ path('user_registration') }}">Registration</a> |
+                <a href="{{ path('user_login') }}">Log in</a>
+            {% else %}
+                <a href="{{ path('test_route') }}">Test</a> |
+                <a href="{{ path('user_logout') }}">Logout</a>
+            {% endif %}
+        </div>
+
+        {% block content %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

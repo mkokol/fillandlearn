@@ -3,4 +3,7 @@ home_homepage:
     prefix:   /
     type:     annotation
 
-
+test_route_page:
+    resource: "@HomeBundle/Controller/TestRouteController.php"
+    prefix:   /test_route
+    type:     annotation

@@ -1,15 +1,13 @@
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData) }}</div>
-{% endif %}
+{% extends "@General/Default/base.html.twig" %}
 
-<form action="{{ path('user_login_post') }}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+{% block title %}Home page.{% endblock %}
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="_password" />
+{% block content %}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData) }}</div>
+    {% endif %}
 
-    <input type="hidden" name="_target_path" value="/test_route" />
-
-    <button type="submit">login</button>
-</form>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+{% endblock %}

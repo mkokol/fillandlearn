@@ -13,8 +13,3 @@ user_logout:
     resource: "@UserBundle/Controller/LogoutController.php"
     prefix:   /user/logout
     type:     annotation
-
-test_route_page:
-    resource: "@HomeBundle/Controller/TestRouteController.php"
-    prefix:   /test_route
-    type:     annotation

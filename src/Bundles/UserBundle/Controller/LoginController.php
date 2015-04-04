@@ -15,59 +15,24 @@ class LoginController extends Controller
      */
     public function getAction()
     {
-        $user = $this->getUser();
-        if ($user) {
-            echo $user->getEmail();
-            die;
-        }
-
         $authenticationUtils = $this->get('security.authentication_utils');
-
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-
-        // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $form = $this->createForm('user_login');
+        $form["email"]->setData($authenticationUtils->getLastUsername());
 
         return [
-            'last_username' => $lastUsername,
-            'error'         => $error,
+            'error' => $error,
+            'form'  => $form->createView()
         ];
-
-
-//
-//        $form = $this->createForm('user_login');
-//
-//        return [
-//            'form' => $form->createView()
-//        ];
     }
 
     /**
      * @Route("/", name="user_login_post")
+     * @Template("UserBundle:Login:post.html.twig")
      * @Method({"POST"})
      */
     public function postAction()
     {
-
-        echo "this controller will not be executed, as the route is handled by the Security system.";
-        die;
-
-//        $authenticationUtils = $this->get('security.authentication_utils');
-
-//        $form = $this->createForm('user_login');
-//        $form->handleRequest($request);
-//
-//        if ($form->isValid()) {
-//
-//
-//            return $this->redirect(
-//                $this->generateUrl('home')
-//            );
-//        }
-//
-//        return [
-//            'form' => $form->createView()
-//        ];
+        return [];
     }
 }

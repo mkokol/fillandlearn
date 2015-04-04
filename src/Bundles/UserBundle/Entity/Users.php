@@ -130,25 +130,22 @@ class Users implements UserInterface
         $this->roles[] = $role;
     }
 
+    /*
+     * For compatibility with symphony user interface
+     */
+
     /** @return Roles[] */
     public function getRoles()
     {
-        $result = [];
-        $roles = $this->roles->toArray();
-
-        /** @var Roles $role */
-        foreach ($roles as $role) {
-            $result[] = $role->getName();
-        }
-
-        return $result;
+        return array_map(
+            $this->roles->toArray(),
+            function($role){
+                return $role->getName();
+            }
+        );
     }
 
-    /**
-     * Returns the username used to authenticate the user.
-     *
-     * @return string The username
-     */
+    /** @return string The username */
     public function getUsername()
     {
         return $this->email;
@@ -156,6 +153,5 @@ class Users implements UserInterface
 
     public function eraseCredentials()
     {
-
     }
 }
