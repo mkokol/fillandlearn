@@ -1,5 +1,29 @@
 {% extends "@General/Default/base.html.twig" %}
 
+{% block stylesheets %}
+    <style>
+        .jumbotron {
+            text-align: center;
+        }
+        .jumbotron h1 {
+            font-size: 60px;
+            padding-bottom: 20px;
+        }
+    </style>
+{% endblock %}
+
 {% block title %}Home page.{% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+    <div class="jumbotron">
+        <h1>Improve yourself today.</h1>
+        <p class="lead" style="padding-bottom: 20px;">
+            Build your vocabulary and improve your language skills.
+        </p>
+        <p>
+            <a role="button" href="{{ path('user_registration') }}" class="btn btn-lg btn-success">
+                Sign up for free
+            </a>
+        </p>
+    </div>
+{% endblock %}

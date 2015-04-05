@@ -11,8 +11,7 @@ class UserLoginFormType extends AbstractType
     {
         $builder
             ->add('email', 'email')
-            ->add('password', 'password')
-            ->add('Login', 'submit');
+            ->add('password', 'password');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
