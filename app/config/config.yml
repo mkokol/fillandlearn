@@ -34,8 +34,6 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:
-        - GeneralBundle
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -81,8 +79,6 @@ assetic:
         bootstrap_js:
             inputs:
                 - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/js/bootstrap.js
-
-
 
 # Doctrine Configuration
 doctrine:

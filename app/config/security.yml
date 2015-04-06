@@ -2,28 +2,18 @@
 # http://symfony.com/doc/current/book/security.html
 
 security:
-    # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
     encoders:
         Symfony\Component\Security\Core\User\User:
             sha256
-        Bundles\UserBundle\Entity\Users:
+        UserBundle\Entity\Users:
             algorithm: sha512
             encode-as-base64: true
             iterations: 10
 
-
-    # http://symfony.com/doc/current/book/security.html#hierarchical-roles
-    role_hierarchy:
-#        ROLE_ADMIN:       ROLE_USER
-#        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
-
-    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
         user:
-            entity: { class: Bundles\UserBundle\Entity\Users, property: email }
+            entity: { class: UserBundle\Entity\Users, property: email }
 
-    # the main part of the security, where you can set up firewalls
-    # for specific sections of your app
     firewalls:
         default:
             pattern: ^/
@@ -41,10 +31,5 @@ security:
                 path: user_logout
                 target: /
 
-    # with these settings you can restrict or allow access for different parts
-    # of your application based on roles, ip, host or methods
-    # http://symfony.com/doc/current/cookbook/security/access_control.html
     access_control:
-        - { path: ^/$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/user/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
-#        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/, role: IS_AUTHENTICATED_ANONYMOUSLY }

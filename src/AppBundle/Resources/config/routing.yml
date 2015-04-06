@@ -1,0 +1,4 @@
+home_homepage:
+    resource: "@AppBundle/Controller/HomeController.php"
+    prefix:   /
+    type:     annotation

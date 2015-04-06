@@ -6,9 +6,10 @@
     http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <imports>
-        <import resource="@GeneralBundle/Resources/config/services.xml"/>
-        <import resource="@HomeBundle/Resources/config/services.xml"/>
+        <import resource="@CommonBundle/Resources/config/services.xml"/>
+        <import resource="@AppBundle/Resources/config/services.xml"/>
         <import resource="@UserBundle/Resources/config/services.xml"/>
+        <import resource="@VocabularyBundle/Resources/config/services.xml"/>
     </imports>
 
 </container>
