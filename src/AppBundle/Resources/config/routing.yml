@@ -22,3 +22,8 @@ vocabulary_delete:
     resource: "@AppBundle/Controller/Vocabulary/VocabularyDeleteController.php"
     prefix:   /vocabulary/delete
     type:     annotation
+
+vocabulary_view:
+    resource: "@AppBundle/Controller/Vocabulary/VocabularyViewController.php"
+    prefix:   /vocabulary/view
+    type:     annotation

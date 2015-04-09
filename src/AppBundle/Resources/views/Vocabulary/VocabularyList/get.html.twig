@@ -59,7 +59,11 @@
         <tbody>
         {% for vocabulary in vocabularies %}
             <tr>
-                <td>{{ vocabulary.title }}</td>
+                <td>
+                    <a href="{{ path('vocabulary_view', {'vocabularyId': vocabulary.vocabularyId}) }}">
+                        {{ vocabulary.title }}
+                    </a>
+                </td>
                 <td>{{ vocabulary.primaryLanguage.name }}</td>
                 <td>{{ vocabulary.secondaryLanguage.name }}</td>
                 <td>
