@@ -13,21 +13,23 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="users")
  */
-class Users implements UserInterface
+class User implements UserInterface
 {
     use CreatedOnEntityTrait;
     use UpdatedOnEntityTrait;
 
     /**
-     * @var integer
+     * @var int
+     *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @ORM\Column(type="integer", name="user_id")
      */
-    private $id;
+    private $userId;
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", name="name")
      * @Assert\NotBlank()
      */
@@ -35,6 +37,7 @@ class Users implements UserInterface
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", name="email")
      * @Assert\NotBlank()
      */
@@ -42,23 +45,26 @@ class Users implements UserInterface
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", name="password")
      */
     private $password;
 
     /**
      * @var string
+     *
      * @ORM\Column(type="string", name="salt")
      */
     private $salt;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Roles")
+     * @var ArrayCollection $userRoles
+     *
+     * @ORM\ManyToMany(targetEntity="Role")
      * @ORM\JoinTable(name="users_roles",
      *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="user_id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="role_id")}
      * )
-     * @var ArrayCollection $userRoles
      */
     private $roles;
 
@@ -70,10 +76,16 @@ class Users implements UserInterface
         $this->updatedOn = new DateTime();
     }
 
-    /** @return integer */
-    public function getId()
+    /** @return int */
+    public function getUserId()
     {
-        return $this->id;
+        return $this->userId;
+    }
+
+    /** @param int */
+    public function setUserId($userId)
+    {
+        $this->userId = $userId;
     }
 
     /** @param string $name */

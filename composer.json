@@ -24,9 +24,9 @@
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "incenteev/composer-parameter-handler": "~2.0",
 
+        "components/normalize.css": "1.1.2",
         "twitter/bootstrap": "3.*",
         "components/jquery": "1.11.1",
-        "components/normalize.css": "1.1.2",
 
         "phing/phing": "2.*"
     },

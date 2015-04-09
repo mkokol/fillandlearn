@@ -1,7 +1,7 @@
 <?php
 namespace UserBundle\Controller;
 
-use UserBundle\Entity\Users;
+use UserBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -17,7 +17,7 @@ class RegistrationController extends Controller
      */
     public function getAction()
     {
-        $form = $this->createForm('user_registration', new Users());
+        $form = $this->createForm('user_registration', new User());
 
         return [
             'form' => $form->createView()
@@ -31,14 +31,14 @@ class RegistrationController extends Controller
      */
     public function postAction(Request $request)
     {
-        $user = new Users();
+        $user = new User();
         $form = $this->createForm('user_registration', $user);
         $form->handleRequest($request);
         $this->encodeUserPassword($user);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $roles = $em->getRepository('UserBundle:Roles')->findOneBy(['name' => 'ROLE_USER']);
+            $roles = $em->getRepository('UserBundle:Role')->findOneBy(['name' => 'ROLE_USER']);
             $user->addRole($roles);
             $em->persist($user);
             $em->flush();
