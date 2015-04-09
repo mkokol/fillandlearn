@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7408d5dada3c1bb928db6986a4b5b52f",
+    "hash": "09f204b046b4c4dc176775677b95f56e",
     "packages": [
         {
             "name": "components/jquery",
@@ -1014,6 +1014,56 @@
                 "minification"
             ],
             "time": "2014-12-12 05:04:05"
+        },
+        {
+            "name": "malsup/form",
+            "version": "3.51",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/malsup/form.git",
+                "reference": "6bf24a5f6d8be65f4e5491863180c09356d9dadd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/malsup/form/zipball/6bf24a5f6d8be65f4e5491863180c09356d9dadd",
+                "reference": "6bf24a5f6d8be65f4e5491863180c09356d9dadd",
+                "shasum": ""
+            },
+            "require": {
+                "components/jquery": ">=1.5"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "jquery.form.js"
+                    ],
+                    "shim": {
+                        "deps": [
+                            "jquery"
+                        ]
+                    }
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "M. Alsup",
+                    "homepage": "http://jquery.malsup.com"
+                }
+            ],
+            "description": "A simple way to AJAX-ify any form on your page; with file upload and progress support.",
+            "homepage": "http://jquery.malsup.com/form/",
+            "keywords": [
+                "ajax",
+                "form",
+                "upload"
+            ],
+            "time": "2014-09-03 01:10:13"
         },
         {
             "name": "monolog/monolog",
@@ -2572,16 +2622,16 @@
         },
         {
             "name": "phpunit/php-token-stream",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-token-stream.git",
-                "reference": "db32c18eba00b121c145575fcbcd4d4d24e6db74"
+                "reference": "eab81d02569310739373308137284e0158424330"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/db32c18eba00b121c145575fcbcd4d4d24e6db74",
-                "reference": "db32c18eba00b121c145575fcbcd4d4d24e6db74",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-token-stream/zipball/eab81d02569310739373308137284e0158424330",
+                "reference": "eab81d02569310739373308137284e0158424330",
                 "shasum": ""
             },
             "require": {
@@ -2617,7 +2667,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2015-01-17 09:51:32"
+            "time": "2015-04-08 04:46:07"
         },
         {
             "name": "phpunit/phpunit",

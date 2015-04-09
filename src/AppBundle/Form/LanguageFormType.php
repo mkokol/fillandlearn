@@ -1,18 +1,16 @@
 <?php
-namespace VocabularyBundle\Form;
+namespace AppBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use VocabularyBundle\Entity\Language;
+use AppBundle\Entity\Language;
 
 class LanguageFormType extends AbstractType
 {
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'data_class'    => Language::class,
             'class'         => Language::class,
             'property'      => 'name',
             'query_builder' => function (EntityRepository $entityRepository) {
@@ -20,7 +18,7 @@ class LanguageFormType extends AbstractType
                     ->createQueryBuilder('l')
                     ->orderBy('l.name', 'ASC');
             },
-            'empty_value'   => 'Choose Category',
+            'empty_value'   => 'Choose Language',
         ]);
     }
 

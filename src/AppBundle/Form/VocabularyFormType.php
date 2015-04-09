@@ -1,11 +1,9 @@
 <?php
-namespace VocabularyBundle\Form;
+namespace AppBundle\Form;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use VocabularyBundle\Entity\Language;
 
 class VocabularyFormType extends AbstractType
 {
@@ -30,7 +28,8 @@ class VocabularyFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'VocabularyBundle\Entity\Vocabulary',
+            'data_class' => 'AppBundle\Entity\Vocabulary',
+            'attr'       => ['id' => 'vocabulary-form']
         ]);
     }
 

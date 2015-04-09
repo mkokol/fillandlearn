@@ -1,4 +1,0 @@
-vocabulary:
-    resource: "@VocabularyBundle/Controller/VocabularyController.php"
-    prefix:   /vocabulary
-    type:     annotation

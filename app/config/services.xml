@@ -9,7 +9,6 @@
         <import resource="@CommonBundle/Resources/config/services.xml"/>
         <import resource="@AppBundle/Resources/config/services.xml"/>
         <import resource="@UserBundle/Resources/config/services.xml"/>
-        <import resource="@VocabularyBundle/Resources/config/services.xml"/>
     </imports>
 
 </container>

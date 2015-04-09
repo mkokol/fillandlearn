@@ -7,7 +7,7 @@ class AppKernel extends Kernel
 {
     public function registerBundles()
     {
-        $bundles = array(
+        $bundles = [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
@@ -19,8 +19,7 @@ class AppKernel extends Kernel
             new CommonBundle\CommonBundle(),
             new AppBundle\AppBundle(),
             new UserBundle\UserBundle(),
-            new VocabularyBundle\VocabularyBundle(),
-        );
+        ];
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();

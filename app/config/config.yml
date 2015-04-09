@@ -76,6 +76,10 @@ assetic:
             inputs:
                 - %kernel.root_dir%/../vendor/components/jquery/jquery.js
 
+        jquery_form:
+            inputs:
+                - %kernel.root_dir%/../vendor/malsup/form/jquery.form.js
+
         bootstrap_js:
             inputs:
                 - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/js/bootstrap.js

@@ -5,8 +5,3 @@ app:
 user:
     resource: "@UserBundle/Resources/config/routing.yml"
     prefix:   /
-
-vocabulary:
-    resource: "@VocabularyBundle/Resources/config/routing.yml"
-    prefix:   /
-

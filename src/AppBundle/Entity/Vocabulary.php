@@ -1,5 +1,5 @@
 <?php
-namespace VocabularyBundle\Entity;
+namespace AppBundle\Entity;
 
 use CommonBundle\Entity\CreatedOnEntityTrait;
 use DateTime;
@@ -34,7 +34,7 @@ class Vocabulary
     /**
      * @var Language
      *
-     * @ORM\ManyToOne(targetEntity="VocabularyBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Language")
      * @ORM\JoinColumn(name="primary_language_id", referencedColumnName="language_id")
      */
     private $primaryLanguage;
@@ -42,7 +42,7 @@ class Vocabulary
     /**
      * @var Language
      *
-     * @ORM\ManyToOne(targetEntity="VocabularyBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Language")
      * @ORM\JoinColumn(name="secondary_language_id", referencedColumnName="language_id")
      */
     private $secondaryLanguage;

@@ -1,5 +1,5 @@
 <?php
-namespace VocabularyBundle\Entity;
+namespace AppBundle\Entity;
 
 use CommonBundle\Entity\CreatedOnEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
