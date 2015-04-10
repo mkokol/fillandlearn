@@ -1,0 +1,89 @@
+<div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                    Folders
+                </a>
+                <span class="manage-item-btn pull-right">
+                    <span class="glyphicon glyphicon-file load-modal" aria-hidden="true"
+                            data-url="{{ path('vocabulary_sheet_add',  {'vocabularyId': vocabulary.vocabularyId}) }}"></span>
+                    <span class="glyphicon glyphicon-plus load-modal" aria-hidden="true"
+                          data-url="{{ path('folder_add', {'vocabularyId': vocabulary.vocabularyId}) }}"></span>
+                </span>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <ul class="list-group">
+                {% for folder in vocabulary.folders %}
+                    <li class="list-group-item type-folder">
+                        <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+                        {{ folder.name }}
+                        <span class="manage-item-btn pull-right">
+                            <span class="glyphicon glyphicon-trash pull-right" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-file pull-right load-modal" aria-hidden="true"
+                              data-url="{{ path('folder_sheet_add',  {'folderId': folder.folderId}) }}"></span>
+                        </span>
+                    </li>
+                    {% if folder.hasSheets %}
+                        {% for sheet in folder.sheets %}
+                            <li class="list-group-item type-folder-sheet">
+                                <span class="glyphicon glyphicon-file " aria-hidden="true"></span>
+                                {{ sheet.name }}
+                                <span class="manage-item-btn pull-right">
+                                    <span class="glyphicon glyphicon-trash pull-right" aria-hidden="true"></span>
+                                    <span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                {% for sheet in vocabulary.sheets %}
+                    <li class="list-group-item type-sheet">
+                        <span class="glyphicon glyphicon-file " aria-hidden="true"></span>
+                        {{ sheet.name }}
+                        <span class="manage-item-btn pull-right">
+                            <span class="glyphicon glyphicon-trash pull-right" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
+                        </span>
+                    </li>
+                {% endfor %}
+                <!--li class="list-group-item type-folder">
+                    <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+                    Folder 2
+                    <span class="manage-item-btn pull-right">
+                        <span class="glyphicon glyphicon-trash pull-right" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-file pull-right" aria-hidden="true"></span>
+                    </span>
+                </li>
+                <li class="list-group-item type-folder-list">
+                    <span class="glyphicon glyphicon-file " aria-hidden="true"></span>
+                    Newsletters
+                    <span class="manage-item-btn pull-right">
+                        <span class="glyphicon glyphicon-trash pull-right" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
+                    </span>
+                </li>
+                <li class="list-group-item type-folder-list">
+                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                    Newsletters
+                    <span class="manage-item-btn pull-right">
+                        <span class="glyphicon glyphicon-trash pull-right" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
+                    </span>
+                </li>
+                <li class="list-group-item type-folder">
+                    <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+                    News
+                    <span class="manage-item-btn pull-right">
+                        <span class="glyphicon glyphicon-trash pull-right" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-pencil pull-right" aria-hidden="true"></span>
+                        <span class="glyphicon glyphicon-file pull-right" aria-hidden="true"></span>
+                    </span>
+                </li-->
+            </ul>
+        </div>
+    </div>
+</div>

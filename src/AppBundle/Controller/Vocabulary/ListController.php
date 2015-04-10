@@ -8,11 +8,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class VocabularyListController extends Controller
+class ListController extends Controller
 {
     /**
      * @Route("/", name="vocabulary")
-     * @Template("AppBundle:Vocabulary/VocabularyList:get.html.twig")
+     * @Template("AppBundle:Vocabulary/List:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */

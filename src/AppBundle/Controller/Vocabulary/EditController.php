@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Vocabulary;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -11,22 +12,24 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Vocabulary;
 
-class VocabularyAddController extends Controller
+class EditController extends Controller
 {
     /**
      * @param Request $request
      *
-     * @Route("/", name="vocabulary_add")
-     * @Template("AppBundle:Vocabulary/VocabularyAdd:get.html.twig")
+     * @Route("/edit/{vocabularyId}/", name="vocabulary_edit")
+     * @ParamConverter("entity", class="AppBundle:Vocabulary")
+     * @Template("AppBundle:Vocabulary/Edit:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function getAction(Request $request)
+    public function getAction(Vocabulary $vocabulary)
     {
-        $vocabulary = new Vocabulary();
-        $vocabulary->setUser($this->getUser());
         $form = $this->createForm('vocabulary', $vocabulary, [
-            'action' => $this->generateUrl('vocabulary_add_post')
+            'action' => $this->generateUrl(
+                'vocabulary_edit_post',
+                ['vocabularyId' => $vocabulary->getVocabularyId()]
+            )
         ]);
 
         return ['form' => $form->createView()];
@@ -35,17 +38,19 @@ class VocabularyAddController extends Controller
     /**
      * @param Request $request
      *
-     * @Route("/", name="vocabulary_add_post")
-     * @Template("AppBundle:Vocabulary/VocabularyAdd:get.html.twig")
+     * @Route("/edit/{vocabularyId}/", name="vocabulary_edit_post")
+     * @ParamConverter("entity", class="AppBundle:Vocabulary")
+     * @Template("AppBundle:Vocabulary/Edit:get.html.twig")
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function postAction(Request $request)
+    public function postAction(Request $request, Vocabulary $vocabulary)
     {
-        $vocabulary = new Vocabulary();
-        $vocabulary->setUser($this->getUser());
         $form = $this->createForm('vocabulary', $vocabulary, [
-            'action' => $this->generateUrl('vocabulary_add_post')
+            'action' => $this->generateUrl(
+                'vocabulary_edit_post',
+                ['vocabularyId' => $vocabulary->getVocabularyId()]
+            )
         ]);
         $form->handleRequest($request);
 

@@ -1,0 +1,87 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}{{ vocabulary.title }}.{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .list-group-item:hover {
+            background: #eeeeee;
+            cursor: pointer;
+        }
+        .active:hover {
+            background: none;
+        }
+        .glyphicon {
+            cursor: pointer;
+            padding-left: 5px;
+        }
+        .list-group-item .manage-item-btn, h4 .manage-item-btn {
+            display: none;
+        }
+        .list-group-item:hover .manage-item-btn, h4:hover .manage-item-btn {
+            display: inline-block;
+        }
+
+        .type-folder-sheet {
+            padding-left: 35px;;
+        }
+
+
+        .list-group .list-group-item:first-child {border-top-right-radius: 0;border-top-left-radius: 0;}
+        .list-group .list-group-item {border-width: 1px 0;}
+        .list-group li.list-group {margin: 0;margin-top: 10px;}
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+            $('ul.list-group li').click(function(){
+                $('ul.list-group li').removeClass('active');
+                $(this).addClass('active')
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div role="alert" class="alert alert-warning" style="margin-left: 15px; margin-right: 15px;">
+            <strong>Warning!</strong> Page in development.
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+
+            {{ render(controller(
+                'AppBundle:VocabularyTree/View:get',
+                {'vocabularyId': vocabulary.vocabularyId}
+            )) }}
+
+        </div>
+        <div class="col-md-8">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Word</th>
+                    <th>Translation</th>
+                    <th>Status</th>
+                    <th style="text-align: right; width: 40px;">
+                        <a href="#">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Some word 1</td>
+                        <td>Translation</td>
+                        <td>In Progress</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

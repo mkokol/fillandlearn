@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Vocabulary;
+namespace AppBundle\Controller\VocabularyTree\Folder;
 
+use AppBundle\Entity\Folder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -12,24 +12,23 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Vocabulary;
 
-class VocabularyEditController extends Controller
+class AddController extends Controller
 {
     /**
      * @param Request $request
      *
-     * @Route("/{vocabularyId}/", name="vocabulary_edit")
-     * @ParamConverter("entity", class="AppBundle:Vocabulary")
-     * @Template("AppBundle:Vocabulary/VocabularyEdit:get.html.twig")
+     * @Route("/{vocabularyId}/folder/add/", name="folder_add")
+     * @Template("AppBundle:VocabularyTree/Folder/Add:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
     public function getAction(Vocabulary $vocabulary)
     {
-        $form = $this->createForm('vocabulary', $vocabulary, [
-            'action' => $this->generateUrl(
-                'vocabulary_edit_post',
-                ['vocabularyId' => $vocabulary->getVocabularyId()]
-            )
+        $folder = new Folder();
+        $form = $this->createForm('folder', $folder, [
+            'action' => $this->generateUrl('folder_add_post', [
+                'vocabularyId' => $vocabulary->getVocabularyId()
+            ])
         ]);
 
         return ['form' => $form->createView()];
@@ -38,25 +37,25 @@ class VocabularyEditController extends Controller
     /**
      * @param Request $request
      *
-     * @Route("/{vocabularyId}/", name="vocabulary_edit_post")
-     * @ParamConverter("entity", class="AppBundle:Vocabulary")
-     * @Template("AppBundle:Vocabulary/VocabularyEdit:get.html.twig")
+     * @Route("/{vocabularyId}/folder/add/", name="folder_add_post")
+     * @Template("AppBundle:VocabularyTree/Folder/Add:get.html.twig")
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")
      */
     public function postAction(Request $request, Vocabulary $vocabulary)
     {
-        $form = $this->createForm('vocabulary', $vocabulary, [
-            'action' => $this->generateUrl(
-                'vocabulary_edit_post',
-                ['vocabularyId' => $vocabulary->getVocabularyId()]
-            )
+        $folder = new Folder();
+        $folder->setVocabulary($vocabulary);
+        $form = $this->createForm('folder', $folder, [
+            'action' => $this->generateUrl('folder_add_post', [
+                'vocabularyId' => $vocabulary->getVocabularyId()
+            ])
         ]);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($vocabulary);
+            $em->persist($folder);
             $em->flush();
 
             return new JsonResponse(['status' => 'success']);

@@ -6,23 +6,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AppBundle\Entity\Vocabulary;
 
-class VocabularyDeleteController extends Controller
+class ViewController extends Controller
 {
     /**
-     * @Route("/{vocabularyId}/", name="vocabulary_delete")
+     * @Route("/{vocabularyId}/", name="vocabulary_view")
      * @ParamConverter("entity", class="AppBundle:Vocabulary")
-     * @Method({"DELETE"})
+     * @Template("AppBundle:Vocabulary/View:get.html.twig")
+     * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function deleteAction(Vocabulary $vocabulary)
+    public function getAction(Vocabulary $vocabulary)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->remove($vocabulary);
-        $em->flush();
-
-        return $this->redirect($this->generateUrl('vocabulary'));
+        return ['vocabulary' => $vocabulary];
     }
 }

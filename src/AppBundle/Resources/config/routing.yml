@@ -3,27 +3,12 @@ homepage:
     prefix:   /
     type:     annotation
 
-vocabulary_list:
-    resource: "@AppBundle/Controller/Vocabulary/VocabularyListController.php"
+vocabulary:
+    resource: "@AppBundle/Controller/Vocabulary/"
     prefix:   /vocabulary
     type:     annotation
 
-vocabulary_add:
-    resource: "@AppBundle/Controller/Vocabulary/VocabularyAddController.php"
-    prefix:   /vocabulary/add
-    type:     annotation
-
-vocabulary_edit:
-    resource: "@AppBundle/Controller/Vocabulary/VocabularyEditController.php"
-    prefix:   /vocabulary/edit
-    type:     annotation
-
-vocabulary_delete:
-    resource: "@AppBundle/Controller/Vocabulary/VocabularyDeleteController.php"
-    prefix:   /vocabulary/delete
-    type:     annotation
-
-vocabulary_view:
-    resource: "@AppBundle/Controller/Vocabulary/VocabularyViewController.php"
-    prefix:   /vocabulary/view
+vocabulary_tree:
+    resource: "@AppBundle/Controller/VocabularyTree/"
+    prefix:   /tree
     type:     annotation

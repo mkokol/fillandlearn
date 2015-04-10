@@ -2,8 +2,11 @@
 namespace AppBundle\Entity;
 
 use CommonBundle\Entity\CreatedOnEntityTrait;
+use CommonBundle\Entity\UpdatedOnEntityTrait;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToMany;
 use UserBundle\Entity\User;
 
 /**
@@ -54,9 +57,26 @@ class Vocabulary
      */
     private $title;
 
+    /**
+     * @var Folder[]
+     *
+     * @OneToMany(targetEntity="AppBundle\Entity\Folder", mappedBy="vocabulary")
+     **/
+    private $folders;
+
+    /**
+     * @var Sheet[]
+     *
+     * @OneToMany(targetEntity="AppBundle\Entity\Sheet", mappedBy="vocabulary")
+     **/
+    private $sheets;
+
+
     public function __construct()
     {
         $this->createdOn = new DateTime();
+        $this->folders = new ArrayCollection();
+        $this->sheets = new ArrayCollection();
     }
 
     /** @return int */
@@ -117,5 +137,27 @@ class Vocabulary
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /** @return bool */
+    public function hasFolders(){
+        return (bool) $this->folders->count();
+    }
+
+    /** @return Folder[] */
+    public function getFolders()
+    {
+        return $this->folders->toArray();
+    }
+
+    /** @return bool */
+    public function hasSheets(){
+        return (bool) $this->sheets->count();
+    }
+
+    /** @return Sheet[] */
+    public function getSheets()
+    {
+        return $this->sheets->toArray();
     }
 }
