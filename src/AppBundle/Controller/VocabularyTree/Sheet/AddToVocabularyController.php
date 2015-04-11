@@ -16,10 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 class AddToVocabularyController extends Controller
 {
     /**
-     * @param Vocabulary $vocabulary
-     * @return array
-     *
-     * @Route("/sheet/add/vocabulary/{vocabularyId}/", name="vocabulary_sheet_add")
+     * @Route("/vocabulary/{vocabularyId}/sheet/add/", name="vocabulary_sheet_add")
      * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:VocabularyTree/Sheet/AddTo:get.html.twig")
      * @Method({"GET"})
@@ -39,10 +36,7 @@ class AddToVocabularyController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return mixed
-     *
-     * @Route("/sheet/add/vocabulary/{vocabularyId}/", name="vocabulary_sheet_add_post")
+     * @Route("/vocabulary/{vocabularyId}/sheet/add/", name="vocabulary_sheet_add_post")
      * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:VocabularyTree/Sheet/AddTo:get.html.twig")
      * @Method({"POST"})

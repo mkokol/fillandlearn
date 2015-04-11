@@ -17,10 +17,7 @@ class AddToFolderController extends Controller
 {
 
     /**
-     * @param Folder $folder
-     * @return mixed
-     *
-     * @Route("/sheet/add/folder/{folderId}/", name="folder_sheet_add")
+     * @Route("/folder/{folderId}/sheet/add/", name="folder_sheet_add")
      * @ParamConverter("folder", class="AppBundle:Folder")
      * @Template("AppBundle:VocabularyTree/Sheet/AddTo:get.html.twig")
      * @Method({"GET"})
@@ -40,11 +37,7 @@ class AddToFolderController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param Folder $folder
-     * @return mixed
-     *
-     * @Route("/sheet/add/folder/{folderId}/", name="folder_sheet_add_post")
+     * @Route("/folder/{folderId}/sheet/add/", name="folder_sheet_add_post")
      * @ParamConverter("folder", class="AppBundle:Folder")
      * @Template("AppBundle:VocabularyTree/Sheet/AddTo:get.html.twig")
      * @Method({"POST"})

@@ -14,8 +14,6 @@ use AppBundle\Entity\Vocabulary;
 class AddController extends Controller
 {
     /**
-     * @param Request $request
-     *
      * @Route("/add/", name="vocabulary_add")
      * @Template("AppBundle:Vocabulary/Add:get.html.twig")
      * @Method({"GET"})
@@ -33,8 +31,6 @@ class AddController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
      * @Route("/add/", name="vocabulary_add_post")
      * @Template("AppBundle:Vocabulary/Add:get.html.twig")
      * @Method({"POST"})

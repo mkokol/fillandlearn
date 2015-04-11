@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\VocabularyTree\Sheet;
 
 use AppBundle\Entity\Sheet;
-use AppBundle\Entity\Vocabulary;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,24 +15,23 @@ use Symfony\Component\HttpFoundation\Request;
 class EditController extends Controller
 {
     /**
-     * @param Vocabulary $vocabulary
+     * @param int $vocabularyId
      * @param Sheet $sheet
      * @return array
      *
      * @Route("/vocabulary/{vocabularyId}/sheet/edit/{sheetId}/", name="sheet_edit")
      * @Template("AppBundle:VocabularyTree/Sheet/Edit:get.html.twig")
      * @ParamConverter("sheet", class="AppBundle:Sheet")
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function getAction(Vocabulary $vocabulary, Sheet $sheet)
+    public function getAction(Sheet $sheet, $vocabularyId)
     {
         $form = $this->createForm('sheet', $sheet, [
             'action' => $this->generateUrl(
                 'sheet_edit_post',
                 [
-                    'vocabularyId' => $vocabulary->getVocabularyId(),
+                    'vocabularyId' => $vocabularyId,
                     'sheetId'      => $sheet->getSheetId()
                 ]
             )
@@ -44,8 +42,8 @@ class EditController extends Controller
 
     /**
      * @param Request $request
-     * @param Vocabulary $vocabulary
      * @param Sheet $sheet
+     * @param int $vocabularyId
      * @return mixed
      *
      * @Route("/vocabulary/{vocabularyId}/sheet/edit/{sheetId}/", name="sheet_edit_post")
@@ -55,13 +53,13 @@ class EditController extends Controller
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function postAction(Request $request, Vocabulary $vocabulary, Sheet $sheet)
+    public function postAction(Request $request, Sheet $sheet, $vocabularyId)
     {
         $form = $this->createForm('sheet', $sheet, [
             'action' => $this->generateUrl(
                 'sheet_edit_post',
                 [
-                    'vocabularyId' => $vocabulary->getVocabularyId(),
+                    'vocabularyId' => $vocabularyId,
                     'sheetId'      => $sheet->getSheetId()
                 ]
             )

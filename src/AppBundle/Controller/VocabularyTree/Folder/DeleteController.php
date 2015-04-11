@@ -3,7 +3,6 @@
 namespace AppBundle\Controller\VocabularyTree\Folder;
 
 use AppBundle\Entity\Folder;
-use AppBundle\Entity\Vocabulary;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -14,12 +13,11 @@ class DeleteController extends Controller
 {
     /**
      * @Route("/vocabulary/{vocabularyId}/folder/delete/{folderId}/", name="folder_delete")
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
      * @ParamConverter("folder", class="AppBundle:Folder")
      * @Method({"DELETE"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function deleteAction(Vocabulary $vocabulary, Folder $folder)
+    public function deleteAction(Folder $folder, $vocabularyId)
     {
         $em = $this->getDoctrine()->getEntityManager();
         $em->remove($folder);
@@ -28,7 +26,7 @@ class DeleteController extends Controller
         return $this->redirect(
             $this->generateUrl(
                 'vocabulary_view',
-                ['vocabularyId' => $vocabulary->getVocabularyId()]
+                ['vocabularyId' => $vocabularyId]
             )
         );
     }

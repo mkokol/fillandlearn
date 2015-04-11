@@ -14,7 +14,7 @@ class ViewController extends Controller
 {
     /**
      * @Route("/{vocabularyId}/", name="vocabulary_view")
-     * @ParamConverter("entity", class="AppBundle:Vocabulary")
+     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:Vocabulary/View:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")

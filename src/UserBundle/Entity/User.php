@@ -136,8 +136,8 @@ class User implements UserInterface
         return $this->salt;
     }
 
-    /** @param Roles $role */
-    public function addRole(Roles $role)
+    /** @param Role $role */
+    public function addRole(Role $role)
     {
         $this->roles[] = $role;
     }
@@ -146,7 +146,7 @@ class User implements UserInterface
      * For compatibility with symphony user interface
      */
 
-    /** @return Roles[] */
+    /** @return Role[] */
     public function getRoles()
     {
         return array_map(

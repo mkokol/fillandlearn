@@ -4,6 +4,7 @@ namespace AppBundle\Controller\VocabularyTree\Folder;
 
 use AppBundle\Entity\Folder;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -15,19 +16,17 @@ use AppBundle\Entity\Vocabulary;
 class AddController extends Controller
 {
     /**
-     * @param Request $request
-     *
      * @Route("/{vocabularyId}/folder/add/", name="folder_add")
      * @Template("AppBundle:VocabularyTree/Folder/Add:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function getAction(Vocabulary $vocabulary)
+    public function getAction($vocabularyId)
     {
         $folder = new Folder();
         $form = $this->createForm('folder', $folder, [
             'action' => $this->generateUrl('folder_add_post', [
-                'vocabularyId' => $vocabulary->getVocabularyId()
+                'vocabularyId' => $vocabularyId
             ])
         ]);
 
@@ -35,9 +34,8 @@ class AddController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
      * @Route("/{vocabularyId}/folder/add/", name="folder_add_post")
+     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:VocabularyTree/Folder/Add:get.html.twig")
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")

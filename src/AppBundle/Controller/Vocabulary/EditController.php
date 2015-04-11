@@ -15,8 +15,6 @@ use AppBundle\Entity\Vocabulary;
 class EditController extends Controller
 {
     /**
-     * @param Request $request
-     *
      * @Route("/edit/{vocabularyId}/", name="vocabulary_edit")
      * @ParamConverter("entity", class="AppBundle:Vocabulary")
      * @Template("AppBundle:Vocabulary/Edit:get.html.twig")
@@ -36,8 +34,6 @@ class EditController extends Controller
     }
 
     /**
-     * @param Request $request
-     *
      * @Route("/edit/{vocabularyId}/", name="vocabulary_edit_post")
      * @ParamConverter("entity", class="AppBundle:Vocabulary")
      * @Template("AppBundle:Vocabulary/Edit:get.html.twig")
