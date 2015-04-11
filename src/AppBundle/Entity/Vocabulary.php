@@ -2,11 +2,9 @@
 namespace AppBundle\Entity;
 
 use CommonBundle\Entity\CreatedOnEntityTrait;
-use CommonBundle\Entity\UpdatedOnEntityTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\OneToMany;
 use UserBundle\Entity\User;
 
 /**
@@ -60,14 +58,14 @@ class Vocabulary
     /**
      * @var Folder[]
      *
-     * @OneToMany(targetEntity="AppBundle\Entity\Folder", mappedBy="vocabulary")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Folder", mappedBy="vocabulary")
      **/
     private $folders;
 
     /**
      * @var Sheet[]
      *
-     * @OneToMany(targetEntity="AppBundle\Entity\Sheet", mappedBy="vocabulary")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sheet", mappedBy="vocabulary")
      **/
     private $sheets;
 

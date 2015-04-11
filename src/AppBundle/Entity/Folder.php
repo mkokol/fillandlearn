@@ -5,9 +5,6 @@ use CommonBundle\Entity\CreatedOnEntityTrait;
 use CommonBundle\Entity\UpdatedOnEntityTrait;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
-use Doctrine\ORM\Mapping\OneToMany;
 
 /**
  * @ORM\Entity
@@ -38,15 +35,15 @@ class Folder
      * @var Vocabulary
      *
      * @0RM\Column(name="vocabulary_id", type="integer")
-     * @ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="folders")
-     * @JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="folders")
+     * @ORM\JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
      **/
     private $vocabulary;
 
     /**
      * @var Sheet[]
      *
-     * @OneToMany(targetEntity="AppBundle\Entity\Sheet", mappedBy="folder")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sheet", mappedBy="folder")
      **/
     private $sheets;
 

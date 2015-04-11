@@ -5,8 +5,6 @@ use CommonBundle\Entity\CreatedOnEntityTrait;
 use CommonBundle\Entity\UpdatedOnEntityTrait;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinColumn;
-use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * @ORM\Entity
@@ -36,9 +34,9 @@ class Sheet
     /**
      * @var Vocabulary
      *
-     * @0RM\Column(name="vocabulary_id", type="integer")
-     * @ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="sheets")
-     * @JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
+     * @0RM\Column(name="vocabulary_id", type="integer", nullable=true)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="sheets")
+     * @ORM\JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
      **/
     private $vocabulary;
 
@@ -46,8 +44,8 @@ class Sheet
      * @var Folder
      *
      * @0RM\Column(name="folder_id", type="integer", nullable=true)
-     * @ManyToOne(targetEntity="AppBundle\Entity\Folder", inversedBy="sheets")
-     * @JoinColumn(name="folder_id", referencedColumnName="folder_id")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Folder", inversedBy="sheets")
+     * @ORM\JoinColumn(name="folder_id", referencedColumnName="folder_id")
      **/
     private $folder;
 

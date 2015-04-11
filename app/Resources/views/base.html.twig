@@ -13,23 +13,28 @@
             padding-bottom: 20px;
             padding-top: 20px;
         }
+
         .container {
             max-width: 980px;
         }
+
         .header {
             margin-bottom: 30px;
             border-bottom: 1px solid #e5e5e5;
             padding-bottom: 20px;
         }
+
         .header, .footer {
             padding-left: 0;
             padding-right: 0;
         }
+
         .header h3 {
             line-height: 40px;
             margin-bottom: 0;
             margin-top: 0;
         }
+
         .footer {
             border-top: 1px solid #e5e5e5;
             color: #777;
@@ -78,13 +83,12 @@
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('.link-as-form').click(function () {
                 var $form = $('<form/>').hide();
-                $form.attr({
-                    'action': $(this).attr('href'),
-                    'method': 'post'
-                });
+                var url = ($(this).data('url')) ? $(this).data('url') : $(this).attr('href');
+
+                $form.attr({'action': url, 'method': 'post'});
                 $form.append($('<input/>', {
                     type: 'hidden',
                     name: '_method'
@@ -106,7 +110,7 @@
             });
             $('.load-modal').click(function () {
                 $('body').append('<div id="modal" class="modal fade"/>');
-                $('#modal').load($(this).data('url'), function(){
+                $('#modal').load($(this).data('url'), function () {
                     $('#modal').modal('show');
                     $('#modal').bind('hidden.bs.modal', function () {
                         $('#modal').remove();
