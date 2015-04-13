@@ -1,3 +1,33 @@
+{% macro shwFolder(vocabulary, folder, cssClass) %}
+    <li class="list-group-item type-folder">
+        <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
+        {{ folder.name }}
+        <span class="manage-item-btn pull-right">
+            <span class="glyphicon glyphicon-file load-modal" aria-hidden="true"
+                  data-url="{{ path('folder_sheet_add',  {'folderId': folder.folderId}) }}"></span>
+            <span class="glyphicon glyphicon-pencil load-modal" aria-hidden="true"
+                  data-url="{{ path('folder_edit',  {'vocabularyId': vocabulary.vocabularyId, 'folderId': folder.folderId}) }}"></span>
+            <span class="glyphicon glyphicon-trash link-as-form" aria-hidden="true" data-method="delete"
+                  data-url="{{ path('folder_delete',  {'vocabularyId': vocabulary.vocabularyId, 'folderId': folder.folderId}) }}"></span>
+        </span>
+    </li>
+{% endmacro %}
+
+{% macro shwSheets(vocabulary, sheets, cssClass) %}
+    {% for sheet in sheets %}
+        <li class="list-group-item {{ cssClass }}">
+            <span class="glyphicon glyphicon-file " aria-hidden="true"></span>
+            {{ sheet.name }}
+            <span class="manage-item-btn pull-right">
+                <span class="glyphicon glyphicon-pencil load-modal" aria-hidden="true"
+                      data-url="{{ path('sheet_edit',  {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}"></span>
+                <span class="glyphicon glyphicon-trash link-as-form" aria-hidden="true" data-method="delete"
+                      data-url="{{ path('sheet_delete',  {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}"></span>
+            </span>
+        </li>
+    {% endfor %}
+{% endmacro %}
+
 <div class="panel-group" id="accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -16,45 +46,14 @@
         <div id="collapseOne" class="panel-collapse collapse in">
             <ul class="list-group">
                 {% for folder in vocabulary.folders %}
-                    <li class="list-group-item type-folder">
-                        <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
-                        {{ folder.name }}
-                        <span class="manage-item-btn pull-right">
-                            <span class="glyphicon glyphicon-file load-modal" aria-hidden="true"
-                                  data-url="{{ path('folder_sheet_add',  {'folderId': folder.folderId}) }}"></span>
-                            <span class="glyphicon glyphicon-pencil load-modal" aria-hidden="true"
-                                  data-url="{{ path('folder_edit',  {'vocabularyId': vocabulary.vocabularyId, 'folderId': folder.folderId}) }}"></span>
-                            <span class="glyphicon glyphicon-trash link-as-form" aria-hidden="true" data-method="delete"
-                                  data-url="{{ path('folder_delete',  {'vocabularyId': vocabulary.vocabularyId, 'folderId': folder.folderId}) }}"></span>
-                        </span>
-                    </li>
+                    {{ _self.shwFolder(vocabulary, folder, 'type-folder') }}
+
                     {% if folder.hasSheets %}
-                        {% for sheet in folder.sheets %}
-                            <li class="list-group-item type-folder-sheet">
-                                <span class="glyphicon glyphicon-file " aria-hidden="true"></span>
-                                {{ sheet.name }}
-                                <span class="manage-item-btn pull-right">
-                                    <span class="glyphicon glyphicon-pencil load-modal" aria-hidden="true"
-                                          data-url="{{ path('sheet_edit',  {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}"></span>
-                                    <span class="glyphicon glyphicon-trash link-as-form" aria-hidden="true" data-method="delete"
-                                          data-url="{{ path('sheet_delete',  {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}"></span>
-                                </span>
-                            </li>
-                        {% endfor %}
+                        {{ _self.shwSheets(vocabulary, folder.sheets, 'type-folder-sheet') }}
                     {% endif %}
                 {% endfor %}
-                {% for sheet in vocabulary.sheets %}
-                    <li class="list-group-item type-sheet">
-                        <span class="glyphicon glyphicon-file " aria-hidden="true"></span>
-                        {{ sheet.name }}
-                        <span class="manage-item-btn pull-right">
-                            <span class="glyphicon glyphicon-pencil load-modal" aria-hidden="true"
-                                  data-url="{{ path('sheet_edit',  {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}"></span>
-                            <span class="glyphicon glyphicon-trash link-as-form" aria-hidden="true" data-method="delete"
-                                  data-url="{{ path('sheet_delete',  {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}"></span>
-                        </span>
-                    </li>
-                {% endfor %}
+
+                {{ _self.shwSheets(vocabulary, vocabulary.sheets, 'type-sheet') }}
             </ul>
         </div>
     </div>

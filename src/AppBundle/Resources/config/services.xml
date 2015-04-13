@@ -25,6 +25,16 @@
             class="AppBundle\Form\SheetFormType">
             <tag name="form.type" alias="sheet" />
         </service>
+
+        <service id="form.word"
+            class="AppBundle\Form\WordFormType">
+            <tag name="form.type" alias="word" />
+        </service>
+
+        <service id="form.translation"
+            class="AppBundle\Form\TranslationFormType">
+            <tag name="form.type" alias="translation" />
+        </service>
     </services>
 
 </container>

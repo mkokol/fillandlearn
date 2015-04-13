@@ -1,0 +1,26 @@
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Word</th>
+        <th>Translation</th>
+        <th>Status</th>
+        <th style="text-align: right; width: 40px;">
+            <a href="#">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+            </a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Some word 1</td>
+        <td>Translation</td>
+        <td>In Progress</td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
+<button type="button" class="btn btn-primary load-modal"
+        data-url="{{ path('vocabulary_word_add', {'vocabularyId': vocabulary.vocabularyId}) }}">
+    Add word
+</button>

@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class ViewController extends Controller
 {
     /**
-     * @Route("/", name="vocabulary_tree")
+     * @Route("/vocabulary/{vocabularyId}/tree/", name="vocabulary_tree")
      * @ParamConverter("entity", class="AppBundle:Vocabulary")
      * @Template("AppBundle:VocabularyTree/View:get.html.twig")
      * @Method({"GET"})

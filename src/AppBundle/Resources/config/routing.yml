@@ -12,3 +12,8 @@ vocabulary_tree:
     resource: "@AppBundle/Controller/VocabularyTree/"
     prefix:   /tree
     type:     annotation
+
+vocabulary_words:
+    resource: "@AppBundle/Controller/VocabularyWords/"
+    prefix:   /tree
+    type:     annotation

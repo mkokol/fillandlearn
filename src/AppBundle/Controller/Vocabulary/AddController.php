@@ -22,7 +22,6 @@ class AddController extends Controller
     public function getAction()
     {
         $vocabulary = new Vocabulary();
-        $vocabulary->setUser($this->getUser());
         $form = $this->createForm('vocabulary', $vocabulary, [
             'action' => $this->generateUrl('vocabulary_add_post')
         ]);

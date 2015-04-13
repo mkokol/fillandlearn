@@ -24,12 +24,7 @@ class Folder
      */
     private $folderId;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(type="string", name="name")
-     */
-    private $name;
+
 
     /**
      * @var Vocabulary
@@ -39,6 +34,13 @@ class Folder
      * @ORM\JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
      **/
     private $vocabulary;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", name="name")
+     */
+    private $name;
 
     /**
      * @var Sheet[]
@@ -65,18 +67,6 @@ class Folder
         $this->folderId = $folderId;
     }
 
-    /** @return string */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /** @param string $name */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
     /** @param Vocabulary $vocabulary */
     public function setVocabulary(Vocabulary $vocabulary)
     {
@@ -87,6 +77,18 @@ class Folder
     public function getVocabulary()
     {
         return $this->vocabulary;
+    }
+
+    /** @return string */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /** @param string $name */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     /** @return bool */

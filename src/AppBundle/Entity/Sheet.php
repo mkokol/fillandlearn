@@ -91,6 +91,12 @@ class Sheet
         return $this->vocabulary;
     }
 
+    /** @return int */
+    public function getVocabularyId()
+    {
+        return $this->vocabulary->getVocabularyId();
+    }
+
     /** @param Folder $folder */
     public function setFolder(Folder $folder)
     {
