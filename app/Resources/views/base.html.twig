@@ -123,6 +123,9 @@
 
                 return false;
             });
+            $('.link').click(function(){
+                document.location.href = $(this).data('url');
+            })
         });
     </script>
     {% block javascripts %}{% endblock %}

@@ -17,8 +17,8 @@ class Word
     /**
      * @var int
      *
-     * @ORM\Column(name="word_id", type="integer")
      * @ORM\Id()
+     * @ORM\Column(name="word_id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $wordId;
@@ -26,7 +26,6 @@ class Word
     /**
      * @var Language
      *
-     * @0RM\Column(name="language_id", type="integer")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Language")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="language_id")
      **/
@@ -47,10 +46,19 @@ class Word
      */
     private $translations;
 
+    /**
+     * @var ArrayCollection $words
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SheetWordReference", mappedBy="word", cascade={"all"})
+     * @ORM\JoinColumn(name="word_id", referencedColumnName="word_id")
+     */
+    private $sheetWordReferences;
+
     public function __construct()
     {
         $this->createdOn = new DateTime();
         $this->translations = new ArrayCollection();
+        $this->sheetWordReference = new ArrayCollection();
     }
 
     /** @return int */
@@ -117,5 +125,17 @@ class Word
     public function removeTranslation(Translation $translation)
     {
         $this->translations->removeElement($translation);
+    }
+
+    /** @return ArrayCollection */
+    public function getSheetWordReferences()
+    {
+        return $this->sheetWordReferences;
+    }
+
+    /** @param SheetWordReference $sheetWordReference */
+    public function addSheetWordReference(SheetWordReference $sheetWordReference)
+    {
+        $this->sheetWordReferences[] = $sheetWordReference;
     }
 }

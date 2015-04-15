@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Vocabulary;
 
+use AppBundle\Entity\Sheet;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,14 +14,29 @@ use AppBundle\Entity\Vocabulary;
 class ViewController extends Controller
 {
     /**
-     * @Route("/{vocabularyId}/", name="vocabulary_view")
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
+     * @Route(
+     *      "/{vocabularyId}/",
+     *      name="vocabulary_view",
+     *      defaults={"sheetId" = null}
+     * )
+     * @Route(
+     *      "/{vocabularyId}/sheet/{sheetId}",
+     *      name="vocabulary_sheet_view"
+     * )
      * @Template("AppBundle:Vocabulary/View:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function getAction(Vocabulary $vocabulary)
+    public function getAction($vocabularyId, $sheetId)
     {
-        return ['vocabulary' => $vocabulary];
+//        $em = $this->getDoctrine()->getManager();
+//        $vocabularies = $em->getRepository('AppBundle:Vocabulary')->getAllWords($vocabulary);
+//        var_dump($vocabularies);
+//        die;
+
+        return [
+            'vocabularyId' => $vocabularyId,
+            'sheetId'      => $sheetId
+        ];
     }
 }

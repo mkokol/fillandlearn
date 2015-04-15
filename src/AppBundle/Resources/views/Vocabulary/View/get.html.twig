@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}{{ vocabulary.title }}.{% endblock %}
+{% block title %}vocabulary.{% endblock %}
 
 {% block stylesheets %}
     <style>
@@ -35,16 +35,30 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            {{ render(controller(
-                'AppBundle:VocabularyTree/View:get',
-                {'vocabularyId': vocabulary.vocabularyId}
-            )) }}
+            {{
+                render(
+                    controller(
+                        'AppBundle:VocabularyTree/View:get',
+                        {
+                            'vocabularyId': vocabularyId,
+                            'sheetId': sheetId
+                        }
+                    )
+                )
+            }}
         </div>
         <div class="col-md-8">
-            {{ render(controller(
-                'AppBundle:VocabularyWords/View:get',
-                {'vocabularyId': vocabulary.vocabularyId}
-            )) }}
+            {{
+                render(
+                    controller(
+                        'AppBundle:VocabularyWords/View:get',
+                        {
+                            'vocabularyId': vocabularyId,
+                            'sheetId': sheetId
+                        }
+                    )
+                )
+            }}
         </div>
     </div>
 {% endblock %}

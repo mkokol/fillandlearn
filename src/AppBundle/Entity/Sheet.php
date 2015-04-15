@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 use CommonBundle\Entity\CreatedOnEntityTrait;
 use CommonBundle\Entity\UpdatedOnEntityTrait;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,8 +19,8 @@ class Sheet
     /**
      * @var int
      *
-     * @ORM\Column(name="sheet_id", type="integer")
      * @ORM\Id()
+     * @ORM\Column(name="sheet_id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $sheetId;
@@ -34,7 +35,6 @@ class Sheet
     /**
      * @var Vocabulary
      *
-     * @0RM\Column(name="vocabulary_id", type="integer", nullable=true)
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="sheets")
      * @ORM\JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
      **/
@@ -43,16 +43,24 @@ class Sheet
     /**
      * @var Folder
      *
-     * @0RM\Column(name="folder_id", type="integer", nullable=true)
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Folder", inversedBy="sheets")
      * @ORM\JoinColumn(name="folder_id", referencedColumnName="folder_id")
      **/
     private $folder;
 
+    /**
+     * @var ArrayCollection $words
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SheetWordReference", mappedBy="sheet", cascade={"all"})
+     * @ORM\JoinColumn(name="sheet_id", referencedColumnName="sheet_id")
+     */
+    private $sheetWordReferences;
+
     public function __construct()
     {
         $this->createdOn = new DateTime();
         $this->updatedOn = new DateTime();
+        $this->sheetWordReference = new ArrayCollection();
     }
 
     /** @return int */
@@ -107,5 +115,17 @@ class Sheet
     public function getFolder()
     {
         return $this->folder;
+    }
+
+    /** @return ArrayCollection */
+    public function getSheetWordReferences()
+    {
+        return $this->sheetWordReferences;
+    }
+
+    /** @param SheetWordReference $sheetWordReference */
+    public function addSheetWordReference(SheetWordReference $sheetWordReference)
+    {
+        $this->sheetWordReferences[] = $sheetWordReference;
     }
 }

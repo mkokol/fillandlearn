@@ -20,7 +20,17 @@
     </tr>
     </tbody>
 </table>
+{% if sheet %}
 <button type="button" class="btn btn-primary load-modal"
-        data-url="{{ path('vocabulary_word_add', {'vocabularyId': vocabulary.vocabularyId}) }}">
+        data-url="{{
+            path(
+                'vocabulary_word_add',
+                {
+                    'vocabularyId': vocabulary.vocabularyId,
+                    'sheetId': sheet.sheetId
+                }
+            )
+        }}">
     Add word
 </button>
+{% endif %}

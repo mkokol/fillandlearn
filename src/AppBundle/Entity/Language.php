@@ -15,8 +15,8 @@ class Language
     /**
      * @var int
      *
-     * @ORM\Column(name="language_id", type="integer")
      * @ORM\Id()
+     * @ORM\Column(name="language_id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $languageId;

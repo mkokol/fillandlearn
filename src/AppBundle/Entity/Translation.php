@@ -16,8 +16,8 @@ class Translation
     /**
      * @var int
      *
-     * @ORM\Column(name="translation_id", type="integer")
      * @ORM\Id()
+     * @ORM\Column(name="translation_id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $translationId;
@@ -25,7 +25,6 @@ class Translation
     /**
      * @var Language
      *
-     * @0RM\Column(name="language_id", type="integer")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Language")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="language_id")
      **/
@@ -34,7 +33,6 @@ class Translation
     /**
      * @var Word
      *
-     * @0RM\Column(name="word_id", type="integer")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Word", inversedBy="translations", cascade={"all"})
      * @ORM\JoinColumn(name="word_id", referencedColumnName="word_id")
      **/

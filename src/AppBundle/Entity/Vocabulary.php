@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use UserBundle\Entity\User;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\VocabularyRepository")
  * @ORM\Table(name="vocabularies")
  */
 class Vocabulary
@@ -18,8 +18,8 @@ class Vocabulary
     /**
      * @var int
      *
-     * @ORM\Column(name="vocabulary_id", type="integer")
      * @ORM\Id()
+     * @ORM\Column(name="vocabulary_id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $vocabularyId;
@@ -138,8 +138,9 @@ class Vocabulary
     }
 
     /** @return bool */
-    public function hasFolders(){
-        return (bool) $this->folders->count();
+    public function hasFolders()
+    {
+        return (bool)$this->folders->count();
     }
 
     /** @return Folder[] */
@@ -149,8 +150,9 @@ class Vocabulary
     }
 
     /** @return bool */
-    public function hasSheets(){
-        return (bool) $this->sheets->count();
+    public function hasSheets()
+    {
+        return (bool)$this->sheets->count();
     }
 
     /** @return Sheet[] */

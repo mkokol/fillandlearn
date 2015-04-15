@@ -15,7 +15,7 @@
 
 {% macro shwSheets(vocabulary, sheets, cssClass) %}
     {% for sheet in sheets %}
-        <li class="list-group-item {{ cssClass }}">
+        <li class="list-group-item {{ cssClass }} link" data-url="{{ path('vocabulary_sheet_view', {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}">
             <span class="glyphicon glyphicon-file " aria-hidden="true"></span>
             {{ sheet.name }}
             <span class="manage-item-btn pull-right">

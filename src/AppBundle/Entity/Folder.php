@@ -18,8 +18,8 @@ class Folder
     /**
      * @var int
      *
-     * @ORM\Column(name="folder_id", type="integer")
      * @ORM\Id()
+     * @ORM\Column(name="folder_id", type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $folderId;
@@ -29,7 +29,6 @@ class Folder
     /**
      * @var Vocabulary
      *
-     * @0RM\Column(name="vocabulary_id", type="integer")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="folders")
      * @ORM\JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
      **/
@@ -46,6 +45,7 @@ class Folder
      * @var Sheet[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sheet", mappedBy="folder")
+     * @ORM\JoinColumn(name="folder_id", referencedColumnName="folder_id")
      **/
     private $sheets;
 
