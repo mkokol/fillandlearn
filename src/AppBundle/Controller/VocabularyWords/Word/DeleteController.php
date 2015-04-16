@@ -13,17 +13,15 @@ class DeleteController extends Controller
 {
     /**
      * @Route(
-     *      "/vocabulary/{vocabularyId}/sheet/word/{sheetWordId}/delete/",
+     *      "/vocabulary/{vocabularyId}/sheet/{sheetId}/word/{sheetWordId}/delete/",
      *      name="sheet_word_delete"
      * )
      * @ParamConverter("sheetWord", class="AppBundle:SheetWord")
      * @Method({"DELETE"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function deleteAction($vocabularyId, SheetWord $sheetWord)
+    public function deleteAction($vocabularyId, $sheetId, SheetWord $sheetWord)
     {
-        $sheetId = $sheetWord->getSheet()->getSheetId();
-
         $em = $this->getDoctrine()->getEntityManager();
         $em->remove($sheetWord);
         $em->flush();

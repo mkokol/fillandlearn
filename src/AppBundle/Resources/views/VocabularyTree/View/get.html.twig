@@ -13,9 +13,10 @@
     </li>
 {% endmacro %}
 
-{% macro shwSheets(vocabulary, sheets, cssClass) %}
+{% macro shwSheets(vocabulary, sheets, sheetId, cssClass) %}
     {% for sheet in sheets %}
-        <li class="list-group-item {{ cssClass }} link" data-url="{{ path('vocabulary_sheet_view', {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}">
+        <li class="list-group-item {{ cssClass }} link{% if sheetId == sheet.sheetId %} active{% endif %}"
+            data-url="{{ path('vocabulary_sheet_view', {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}">
             <span class="glyphicon glyphicon-file " aria-hidden="true"></span>
             {{ sheet.name }}
             <span class="manage-item-btn pull-right">
@@ -49,11 +50,11 @@
                     {{ _self.shwFolder(vocabulary, folder, 'type-folder') }}
 
                     {% if folder.hasSheets %}
-                        {{ _self.shwSheets(vocabulary, folder.sheets, 'type-folder-sheet') }}
+                        {{ _self.shwSheets(vocabulary, folder.sheets, sheet.sheetId, 'type-folder-sheet') }}
                     {% endif %}
                 {% endfor %}
 
-                {{ _self.shwSheets(vocabulary, vocabulary.sheets, 'type-sheet') }}
+                {{ _self.shwSheets(vocabulary, vocabulary.sheets, sheet.sheetId, 'type-sheet') }}
             </ul>
         </div>
     </div>

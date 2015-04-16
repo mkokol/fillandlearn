@@ -31,7 +31,17 @@
                 </td>
                 <td></td>
                 <td>
-                    <span class="glyphicon glyphicon-trash link-as-form" aria-hidden="true" data-method="delete"></span>
+                    <span class="glyphicon glyphicon-trash link-as-form" aria-hidden="true" data-method="delete"
+                          data-url="{{
+                              path(
+                                  'sheet_word_delete',
+                                  {
+                                      'vocabularyId': vocabulary.vocabularyId,
+                                      'sheetId': sheet.sheetId,
+                                      'sheetWordId': sheetWord.sheetWordId
+                                  }
+                              )
+                          }}">
                     </span>
                 </td>
             </tr>
@@ -48,4 +58,8 @@
             }}">
         Add word
     </button>
+{% else %}
+    <div role="alert" class="alert alert-info">
+        <strong>Info!</strong> For adding words you need to create a Sheet.
+    </div>
 {% endif %}
