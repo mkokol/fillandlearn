@@ -128,4 +128,10 @@ class Sheet
     {
         $this->sheetWord[] = $sheetWord;
     }
+
+    /** @return int */
+    public function getSheetWordCount()
+    {
+        return $this->sheetWord->count();
+    }
 }
