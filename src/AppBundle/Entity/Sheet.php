@@ -35,7 +35,7 @@ class Sheet
     /**
      * @var Vocabulary
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="sheets")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="sheets", fetch="EXTRA_LAZY")
      * @ORM\JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
      **/
     private $vocabulary;
@@ -49,18 +49,18 @@ class Sheet
     private $folder;
 
     /**
-     * @var ArrayCollection $words
+     * @var SheetWord[] $words
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SheetWordReference", mappedBy="sheet", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SheetWord", mappedBy="sheet")
      * @ORM\JoinColumn(name="sheet_id", referencedColumnName="sheet_id")
      */
-    private $sheetWordReferences;
+    private $sheetWord;
 
     public function __construct()
     {
         $this->createdOn = new DateTime();
         $this->updatedOn = new DateTime();
-        $this->sheetWordReference = new ArrayCollection();
+        $this->sheetWord = new ArrayCollection();
     }
 
     /** @return int */
@@ -117,15 +117,15 @@ class Sheet
         return $this->folder;
     }
 
-    /** @return ArrayCollection */
-    public function getSheetWordReferences()
+    /** @return SheetWord[] */
+    public function getSheetWord()
     {
-        return $this->sheetWordReferences;
+        return $this->sheetWord;
     }
 
-    /** @param SheetWordReference $sheetWordReference */
-    public function addSheetWordReference(SheetWordReference $sheetWordReference)
+    /** @param SheetWord $sheetWord */
+    public function addSheetWord(SheetWord $sheetWord)
     {
-        $this->sheetWordReferences[] = $sheetWordReference;
+        $this->sheetWord[] = $sheetWord;
     }
 }

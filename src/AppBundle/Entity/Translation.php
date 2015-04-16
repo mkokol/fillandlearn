@@ -74,6 +74,12 @@ class Translation
         return $this->language;
     }
 
+    /** @return int */
+    public function getLanguageId()
+    {
+        return $this->language->getLanguageId();
+    }
+
     /** @param Word $word */
     public function setWord(Word $word){
         $this->word = $word;

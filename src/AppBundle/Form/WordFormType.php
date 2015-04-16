@@ -1,15 +1,31 @@
 <?php
 namespace AppBundle\Form;
 
+use AppBundle\Form\EventListener\AddUniqueWordEventListener;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class WordFormType extends AbstractType
 {
+    /** @var EntityManager $em */
+    private $em;
+
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+
+        $addUniqueWordEventListener = new AddUniqueWordEventListener(
+            $this->em,
+            $options['vocabulary'],
+            $options['sheetWord']
+        );
 
         $builder
             ->add('word', 'text', [
@@ -23,14 +39,18 @@ class WordFormType extends AbstractType
                 'allow_delete' => true,
                 'prototype'    => true,
                 'by_reference' => false
-            ]);
+            ])
+            ->addEventSubscriber($addUniqueWordEventListener);
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AppBundle\Entity\Word',
-            'attr'       => ['id' => 'word-form']
+            'data_class'           => 'AppBundle\Entity\Word',
+            'attr'                 => ['id' => 'word-form'],
+            'vocabulary'           => null,
+            'sheetWord'            => null,
+            'sheetWordTranslation' => []
         ]);
     }
 

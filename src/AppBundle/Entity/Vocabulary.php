@@ -65,10 +65,10 @@ class Vocabulary
     /**
      * @var Sheet[]
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sheet", mappedBy="vocabulary")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Sheet", mappedBy="vocabulary", cascade={"all"})
+     * @ORM\JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
      **/
     private $sheets;
-
 
     public function __construct()
     {
@@ -113,6 +113,12 @@ class Vocabulary
         $this->primaryLanguage = $language;
     }
 
+    /** @return int */
+    public function getPrimaryLanguageId()
+    {
+        return $this->primaryLanguage->getLanguageId();
+    }
+
     /** @return Language */
     public function getSecondaryLanguage()
     {
@@ -123,6 +129,12 @@ class Vocabulary
     public function setSecondaryLanguage(Language $language)
     {
         $this->secondaryLanguage = $language;
+    }
+
+    /** @return int */
+    public function getSecondaryLanguageId()
+    {
+        return $this->secondaryLanguage->getLanguageId();
     }
 
     /** @return string */

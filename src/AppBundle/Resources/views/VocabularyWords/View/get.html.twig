@@ -1,36 +1,51 @@
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>Word</th>
-        <th>Translation</th>
-        <th>Status</th>
-        <th style="text-align: right; width: 40px;">
-            <a href="#">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-            </a>
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Some word 1</td>
-        <td>Translation</td>
-        <td>In Progress</td>
-        <td></td>
-    </tr>
-    </tbody>
-</table>
 {% if sheet %}
-<button type="button" class="btn btn-primary load-modal"
-        data-url="{{
-            path(
-                'vocabulary_word_add',
-                {
-                    'vocabularyId': vocabulary.vocabularyId,
-                    'sheetId': sheet.sheetId
-                }
-            )
-        }}">
-    Add word
-</button>
+    <style>
+        table span:after {
+            content: ";";
+        }
+        table span:last-child:after {
+            content: "";
+        }
+    </style>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Word</th>
+            <th>Translation</th>
+            <th>Status</th>
+            <th style="text-align: right; width: 40px;">
+                <a href="#">
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                </a>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sheetWord in sheet.sheetWord %}
+            <tr>
+                <td>{{ sheetWord.word.word }}</td>
+                <td>
+                    {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
+                        <span>{{ sheetWordTranslation.translation.translation }}</span>
+                    {% endfor %}
+                </td>
+                <td></td>
+                <td>
+                    <span class="glyphicon glyphicon-trash link-as-form" aria-hidden="true" data-method="delete"></span>
+                    </span>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="button" class="btn btn-primary load-modal"
+            data-url="{{
+                path(
+                    'vocabulary_word_add',
+                    {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
+                )
+            }}">
+        Add word
+    </button>
 {% endif %}

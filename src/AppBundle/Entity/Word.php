@@ -5,10 +5,12 @@ use CommonBundle\Entity\CreatedOnEntityTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="words")
+ * @UniqueEntity("word")
  */
 class Word
 {
@@ -34,7 +36,7 @@ class Word
     /**
      * @var string
      *
-     * @ORM\Column(type="string", name="word")
+     * @ORM\Column(type="string", name="word", unique=true)
      */
     private $word;
 
@@ -49,16 +51,16 @@ class Word
     /**
      * @var ArrayCollection $words
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SheetWordReference", mappedBy="word", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SheetWord", mappedBy="word")
      * @ORM\JoinColumn(name="word_id", referencedColumnName="word_id")
      */
-    private $sheetWordReferences;
+    private $sheetWord;
 
     public function __construct()
     {
         $this->createdOn = new DateTime();
         $this->translations = new ArrayCollection();
-        $this->sheetWordReference = new ArrayCollection();
+        $this->sheetWord = new ArrayCollection();
     }
 
     /** @return int */
@@ -103,7 +105,7 @@ class Word
         return (bool)$this->translations->count();
     }
 
-    /** @return Translation[] */
+    /** @return ArrayCollection */
     public function getTranslations()
     {
         return $this->translations;
@@ -128,14 +130,19 @@ class Word
     }
 
     /** @return ArrayCollection */
-    public function getSheetWordReferences()
+    public function getSheetWord()
     {
-        return $this->sheetWordReferences;
+        return $this->sheetWord;
     }
 
-    /** @param SheetWordReference $sheetWordReference */
-    public function addSheetWordReference(SheetWordReference $sheetWordReference)
+    /** @param SheetWord $sheetWord */
+    public function addSheetWord(SheetWord $sheetWord)
     {
-        $this->sheetWordReferences[] = $sheetWordReference;
+        $this->sheetWord[] = $sheetWord;
+    }
+
+    public function __toString()
+    {
+        return strval($this->wordId);
     }
 }

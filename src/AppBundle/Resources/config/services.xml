@@ -29,6 +29,7 @@
         <service id="form.word"
             class="AppBundle\Form\WordFormType">
             <tag name="form.type" alias="word" />
+            <argument type="service" id="doctrine.orm.entity_manager" />
         </service>
 
         <service id="form.translation"

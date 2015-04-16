@@ -10,7 +10,7 @@ class UserRegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('user_name', 'text', [
+            ->add('name', 'text', [
                 'label' => 'User Name',
                 'attr'  => [
                     'class'       => 'form-control',
