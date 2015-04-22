@@ -35,7 +35,7 @@ class Sheet
     /**
      * @var Vocabulary
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="sheets", fetch="EXTRA_LAZY")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Vocabulary", inversedBy="sheets")
      * @ORM\JoinColumn(name="vocabulary_id", referencedColumnName="vocabulary_id")
      **/
     private $vocabulary;

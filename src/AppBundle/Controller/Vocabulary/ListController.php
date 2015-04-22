@@ -1,5 +1,4 @@
 <?php
-
 namespace AppBundle\Controller\Vocabulary;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -11,7 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class ListController extends Controller
 {
     /**
-     * @Route("/", name="vocabulary")
+     * @Route(
+     *      "/",
+     *      name="vocabulary"
+     * )
      * @Template("AppBundle:Vocabulary/List:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")

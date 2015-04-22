@@ -1,5 +1,4 @@
 <?php
-
 namespace AppBundle\Controller\Vocabulary;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -12,7 +11,10 @@ use AppBundle\Entity\Vocabulary;
 class DeleteController extends Controller
 {
     /**
-     * @Route("/delete/{vocabularyId}/", name="vocabulary_delete")
+     * @Route(
+     *      "/delete/{vocabularyId}/",
+     *      name="vocabulary_delete"
+     * )
      * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
      * @Method({"DELETE"})
      * @Security("has_role('ROLE_USER')")

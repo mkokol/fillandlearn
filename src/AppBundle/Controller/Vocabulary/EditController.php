@@ -1,5 +1,4 @@
 <?php
-
 namespace AppBundle\Controller\Vocabulary;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -15,7 +14,10 @@ use AppBundle\Entity\Vocabulary;
 class EditController extends Controller
 {
     /**
-     * @Route("/edit/{vocabularyId}/", name="vocabulary_edit")
+     * @Route(
+     *      "/edit/{vocabularyId}/",
+     *      name="vocabulary_edit"
+     * )
      * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:Vocabulary/Edit:get.html.twig")
      * @Method({"GET"})
@@ -34,7 +36,10 @@ class EditController extends Controller
     }
 
     /**
-     * @Route("/edit/{vocabularyId}/", name="vocabulary_edit_post")
+     * @Route(
+     *      "/edit/{vocabularyId}/",
+     *      name="vocabulary_edit_post"
+     * )
      * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:Vocabulary/Edit:get.html.twig")
      * @Method({"POST"})

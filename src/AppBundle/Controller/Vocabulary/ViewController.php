@@ -1,5 +1,4 @@
 <?php
-
 namespace AppBundle\Controller\Vocabulary;
 
 use AppBundle\Entity\Sheet;
@@ -29,11 +28,6 @@ class ViewController extends Controller
      */
     public function getAction($vocabularyId, $sheetId)
     {
-//        $em = $this->getDoctrine()->getManager();
-//        $vocabularies = $em->getRepository('AppBundle:Vocabulary')->getAllWords($vocabulary);
-//        var_dump($vocabularies);
-//        die;
-
         return [
             'vocabularyId' => $vocabularyId,
             'sheetId'      => $sheetId

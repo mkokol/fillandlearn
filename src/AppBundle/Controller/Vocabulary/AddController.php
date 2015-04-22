@@ -1,5 +1,4 @@
 <?php
-
 namespace AppBundle\Controller\Vocabulary;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,7 +13,10 @@ use AppBundle\Entity\Vocabulary;
 class AddController extends Controller
 {
     /**
-     * @Route("/add/", name="vocabulary_add")
+     * @Route(
+     *      "/add/",
+     *      name="vocabulary_add"
+     * )
      * @Template("AppBundle:Vocabulary/Add:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
@@ -30,7 +32,10 @@ class AddController extends Controller
     }
 
     /**
-     * @Route("/add/", name="vocabulary_add_post")
+     * @Route(
+     *      "/add/",
+     *      name="vocabulary_add_post"
+     * )
      * @Template("AppBundle:Vocabulary/Add:get.html.twig")
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")

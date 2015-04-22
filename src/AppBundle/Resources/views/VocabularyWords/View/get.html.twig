@@ -60,6 +60,15 @@
             }}">
         Add word
     </button>
+    <button type="button" class="btn btn-primary load-modal"
+            data-url="{{
+                path(
+                    'remember_word',
+                    {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
+                )
+            }}">
+        Learn words
+    </button>
 {% else %}
     <div role="alert" class="alert alert-info">
         <strong>Info!</strong> For adding words you need to create a Sheet.
