@@ -6,24 +6,32 @@ use Doctrine\ORM\EntityRepository;
 
 class VocabularyRepository extends EntityRepository
 {
-    public function getAllWords($vocabularyId)
+    public function getAllWords($vocabularyId, $sheetId)
     {
-        $qb = $this->getEntityManager()
+        $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder()
-            ->select('sheet_word', 'word', 'sheetWordTranslations', 'translation')
+            ->select('sheet_word')
             ->addSelect('RAND() as HIDDEN rand')
             ->from(SheetWord::class, 'sheet_word')
             ->innerJoin('sheet_word.sheet', 'sheet')
-            ->leftJoin('sheet.folder', 'folder')
             ->innerJoin('sheet_word.word', 'word')
             ->innerJoin('sheet_word.sheetWordTranslations', 'sheetWordTranslations')
             ->innerJoin('sheetWordTranslations.translation', 'translation')
-            ->where('sheet.vocabulary = :vocabularyId')
-            ->orWhere('folder.vocabulary = :vocabularyId')
-            ->setParameter('vocabularyId', $vocabularyId)
             ->addOrderBy('rand');
 
-        return $qb
+        if ($sheetId) {
+            $queryBuilder
+                ->where('sheet.sheetId = :sheetId')
+                ->setParameter('sheetId', $sheetId);
+        } else {
+            $queryBuilder
+                ->leftJoin('sheet.folder', 'folder')
+                ->where('sheet.vocabulary = :vocabularyId')
+                ->orWhere('folder.vocabulary = :vocabularyId')
+                ->setParameter('vocabularyId', $vocabularyId);
+        }
+
+        return $queryBuilder
             ->getQuery()
             ->getResult();
     }

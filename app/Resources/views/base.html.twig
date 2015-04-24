@@ -79,7 +79,7 @@
             <p>&copy; Company 2015</p>
         </footer>
     </div>
-    {% javascripts '@jquery' '@bootstrap_js' '@jquery_form' %}
+    {% javascripts '@jquery' '@bootstrap_js' '@jquery_form' '@jquery_knob' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     <script>
@@ -114,6 +114,10 @@
                     $('#modal').modal('show');
                     $('#modal').bind('hidden.bs.modal', function () {
                         $('#modal').remove();
+
+                        if (typeof modalRemove !== 'undefined' && $.isFunction(modalRemove)) {
+                            modalRemove();
+                        }
                     });
 
                     if (typeof modalInit !== 'undefined' && $.isFunction(modalInit)) {
