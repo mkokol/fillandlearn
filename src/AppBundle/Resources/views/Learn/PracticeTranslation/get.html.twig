@@ -1,0 +1,156 @@
+<style>
+    .learn-translation {
+        display: none;
+        position: relative;
+        width: 100%;
+        left: 0;
+        z-index: 1000;
+        min-width: 160px;
+        padding: 0;
+        list-style: none;
+        background-color: #fff;
+        -webkit-background-clip: padding-box;
+        background-clip: padding-box;
+        border: 1px solid rgba(0, 0, 0, .15);
+        border-radius: 4px;
+        -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, .175);
+    }
+    .learn-translation:before {
+        content: "";
+        border-bottom: 10px solid #fff;
+        border-right: 10px solid transparent;
+        border-left: 10px solid transparent;
+        position: absolute;
+        top: -10px;
+        left: 16px;
+        z-index: 10;
+    }
+    .learn-translation:after {
+        content: "";
+        border-bottom: 12px solid #ccc;
+        border-right: 12px solid transparent;
+        border-left: 12px solid transparent;
+        position: absolute;
+        top: -12px;
+        left: 14px;
+        z-index: 9;
+    }
+    .learn-translation li {
+        border-bottom: 1px solid rgba(0, 0, 0, .15);
+        padding: 5px 10px;
+    }
+    .learn-translation li:last-child {
+        border-bottom: none;
+    }
+</style>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">Practice Translation.</h4>
+        </div>
+        <div class="modal-body">
+            {% for sheetWord in sheetWords|slice(0, 1) %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 id="word" class="panel-title">
+                            {{ sheetWord.word.word }}
+                        </h3>
+                    </div>
+                </div>
+                <ul id="translations" class="learn-translation">
+                    {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
+                        <li>
+                            {{ sheetWordTranslation.translation.translation }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div id="input-translation-group" class="form-group">
+                    <label class="control-label" for="inputError1">Input translation</label>
+
+                    <div class="input-group">
+                        <input id="input-translation" type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default add-translation" type="button">
+                                <span id="next-word" class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var word = 0;
+    var words = [];
+
+    {% for sheetWord in sheetWords %}
+    words.push({
+        word: '{{ sheetWord.word.word }}',
+        translations: [{% spaceless %}
+            {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
+            '{{ sheetWordTranslation.translation.translation }}',
+            {% endfor %}
+            {% endspaceless %}]
+    });
+    {% endfor %}
+
+    $("#input-translation").keypress(function (e) {
+        if (e.which == 13) {
+            $("#next-word").click();
+        }
+    });
+
+    $("#next-word").click(function () {
+        if ($("#input-translation").val() == ""
+            || $("#input-translation-group").hasClass("has-error")
+            || $("#input-translation-group").hasClass("has-success")
+        )
+        {
+            showNextWord();
+            return;
+        }
+
+        var isCorrect = false;
+        for (var i = 0; i < words[word].translations.length; i++) {
+            if (words[word].translations[i] == $("#input-translation").val()) {
+                isCorrect = true;
+            }
+        }
+
+        if (isCorrect) {
+            $("#input-translation-group").addClass("has-success");
+        } else {
+            $("#input-translation-group").addClass("has-error");
+            showTranslations()
+        }
+    });
+
+    function showTranslations(){
+        $("#translations").show();
+        var translations = '';
+        for (i = 0; i < words[word].translations.length; i++) {
+            translations += '<li>' + words[word].translations[i] + '</li>';
+        }
+        $("#translations").html(translations);
+    }
+
+    function showNextWord() {
+        $("#translations").hide();
+        $("#input-translation-group").removeClass("has-success").removeClass("has-error");
+        word++;
+        $("#word").text(words[word].word);
+        $("#input-translation").val('');
+    }
+
+</script>

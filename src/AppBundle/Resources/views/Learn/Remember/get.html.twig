@@ -107,7 +107,7 @@
 <script>
 var timerId = null;
 var time = 0;
-var word = 1;
+var word = 0;
 var words = [];
 
 {% for sheetWord in sheetWords %}
@@ -142,11 +142,10 @@ $.when(
 });
 
 function timerClick() {
-    time += 360 / 80;
+    time += 360 / 10;
     if (time > 360) {
         time = 0;
         word += 1;
-        console.log(word);
         showWord(word);
     }
     $('.timer').val(time).trigger("change");
@@ -158,8 +157,7 @@ function showWord(index) {
     for (i = 0; i < words[index].translations.length; i++) {
         translations += '<li>' + words[index].translations[i] + '</li>';
     }
-    console.log(index + "/" + words.length);
-    $("#current-word-number").html(index);
+    $("#current-word-number").html(index + 1);
     $("#translations").html(translations);
 }
 function modalRemove() {

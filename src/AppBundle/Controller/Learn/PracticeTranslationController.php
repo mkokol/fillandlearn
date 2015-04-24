@@ -7,14 +7,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class RememberController extends Controller
+class PracticeTranslationController extends Controller
 {
     /**
      * @Route(
-     *      "/vocabulary/{vocabularyId}/sheet/{sheetId}/remember",
-     *      name="remember_word"
+     *      "/vocabulary/{vocabularyId}/sheet/{sheetId}/practice/translation",
+     *      name="practice_translation"
      * )
-     * @Template("AppBundle:Learn/Remember:get.html.twig")
+     * @Template("AppBundle:Learn/PracticeTranslation:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */

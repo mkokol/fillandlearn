@@ -69,6 +69,15 @@
             }}">
         Learn words
     </button>
+    <button type="button" class="btn btn-primary load-modal"
+            data-url="{{
+                path(
+                    'practice_translation',
+                    {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
+                )
+            }}">
+        Practice Translation
+    </button>
 {% else %}
     <div role="alert" class="alert alert-info">
         <strong>Info!</strong> For adding words you need to create a Sheet.
