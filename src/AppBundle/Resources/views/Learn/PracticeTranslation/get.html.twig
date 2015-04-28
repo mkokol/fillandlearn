@@ -16,6 +16,7 @@
         -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
         box-shadow: 0 3px 6px rgba(0, 0, 0, .175);
     }
+
     .learn-translation:before {
         content: "";
         border-bottom: 10px solid #fff;
@@ -26,6 +27,7 @@
         left: 16px;
         z-index: 10;
     }
+
     .learn-translation:after {
         content: "";
         border-bottom: 12px solid #ccc;
@@ -36,13 +38,36 @@
         left: 14px;
         z-index: 9;
     }
+
     .learn-translation li {
         border-bottom: 1px solid rgba(0, 0, 0, .15);
         padding: 5px 10px;
     }
+
     .learn-translation li:last-child {
         border-bottom: none;
     }
+
+    .progress-bar-status-out-bar, .progress-bar-status-in-bar {
+        padding: 0 5px 0 5px;
+    }
+
+    .progress-msg {
+        line-height: 14px;
+        font-size: 16px;
+        color: #333333;
+    }
+    .progress-msg span {
+        display: block;
+    }
+    .progress-msg span:first-child {
+        border-bottom: 1px solid #333333;
+        padding-bottom: 3px;
+    }
+    .progress-msg span:last-child {
+        padding-top: 5px;
+    }
+
 </style>
 
 <div class="modal-dialog">
@@ -54,34 +79,47 @@
             <h4 class="modal-title" id="myModalLabel">Practice Translation.</h4>
         </div>
         <div class="modal-body">
-            {% for sheetWord in sheetWords|slice(0, 1) %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 id="word" class="panel-title">
-                            {{ sheetWord.word.word }}
-                        </h3>
-                    </div>
-                </div>
-                <ul id="translations" class="learn-translation">
-                    {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
-                        <li>
-                            {{ sheetWordTranslation.translation.translation }}
-                        </li>
-                    {% endfor %}
-                </ul>
-                <div id="input-translation-group" class="form-group">
-                    <label class="control-label" for="inputError1">Input translation</label>
+            <div class="row">
+                <div class="col-md-9 col-xs-9">
+                    {% for sheetWord in sheetWords|slice(0, 1) %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 id="word" class="panel-title">
+                                    {{ sheetWord.word.word }}
+                                </h3>
+                            </div>
+                        </div>
+                        <ul id="translations" class="learn-translation">
+                            {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
+                                <li>
+                                    {{ sheetWordTranslation.translation.translation }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <div id="input-translation-group" class="form-group">
+                            <label class="control-label" for="input-translation">Input translation</label>
 
-                    <div class="input-group">
-                        <input id="input-translation" type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default add-translation" type="button">
-                                <span id="next-word" class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-                            </button>
+                            <div class="input-group">
+                                <input id="input-translation" type="text" class="form-control">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default add-translation" type="button">
+                                        <span id="next-word" class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-3 col-xs-3">
+                    <div class="learning-progress" data-width="100" data-height="100"
+                         data-fgColor="#04b100" data-thickness=".2" data-readOnly=true>
+                        <span class="progress-msg">
+                            <span id="current-word-number">1</span>
+                            <span>{{ sheetWords|length }}</span>
                         </span>
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -96,6 +134,7 @@
 
     {% for sheetWord in sheetWords %}
     words.push({
+        id: '{{ sheetWord.sheetWordId }}',
         word: '{{ sheetWord.word.word }}',
         translations: [{% spaceless %}
             {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
@@ -112,45 +151,78 @@
     });
 
     $("#next-word").click(function () {
-        if ($("#input-translation").val() == ""
+        if ((
+                $("#input-translation").val() == ""
+                && (
+                    $("#input-translation-group").hasClass("has-error")
+                    || $("#input-translation-group").hasClass("has-success")
+                )
+            )
             || $("#input-translation-group").hasClass("has-error")
             || $("#input-translation-group").hasClass("has-success")
-        )
-        {
+        ) {
             showNextWord();
             return;
         }
 
         var isCorrect = false;
         for (var i = 0; i < words[word].translations.length; i++) {
-            if (words[word].translations[i] == $("#input-translation").val()) {
+            var translation = words[word].translations[i].replace('&#039;', '\'');
+            if (translation == $("#input-translation").val()) {
                 isCorrect = true;
             }
         }
 
+        showTranslations();
+
         if (isCorrect) {
             $("#input-translation-group").addClass("has-success");
+            saveWordStatus(words[word].id, 1);
         } else {
             $("#input-translation-group").addClass("has-error");
-            showTranslations()
+            saveWordStatus(words[word].id, 0);
         }
     });
 
-    function showTranslations(){
-        $("#translations").show();
+    function showTranslations() {
         var translations = '';
-        for (i = 0; i < words[word].translations.length; i++) {
+        for (var i = 0; i < words[word].translations.length; i++) {
             translations += '<li>' + words[word].translations[i] + '</li>';
         }
-        $("#translations").html(translations);
+        $("#translations").html(translations).show();;
     }
 
     function showNextWord() {
-        $("#translations").hide();
-        $("#input-translation-group").removeClass("has-success").removeClass("has-error");
-        word++;
-        $("#word").text(words[word].word);
-        $("#input-translation").val('');
+        $(".learning-progress").val(word + 1).trigger('change');
+        $("#current-word-number").html(word + 1);
+        if (word < words.length) {
+            word++;
+            $("#translations").hide();
+            $("#input-translation-group").removeClass("has-success").removeClass("has-error");
+            $("#word").text(words[word].word);
+            $("#input-translation").val('');
+        }
     }
 
+    function saveWordStatus(id, status) {
+        $.ajax({
+            method: "POST",
+            url: "/tree/sheet-word/" + id + "/status/" + status + "/add/"
+        });
+    }
+
+    $(".learning-progress").knob({
+        width: 100,
+        height: 100,
+        min: 0,
+        max: {{ sheetWords|length }},
+        easing: 'swing',
+        readOnly:true
+    });
+
+    $("#input-translation").focus();
+
+    function modalRemove() {
+        location.reload();
+    }
 </script>

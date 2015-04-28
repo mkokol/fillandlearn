@@ -12,6 +12,7 @@
         <tr>
             <th>Word</th>
             <th>Translation</th>
+            <th style="width: 60px;">State</th>
             <th style="width: 75px;">Created</th>
             <th style="text-align: right; width: 40px;">
                 <a href="#">
@@ -28,6 +29,15 @@
                     {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
                         <span>{{ sheetWordTranslation.translation.translation }}</span>
                     {% endfor %}
+                </td>
+                <td>
+                    {% if sheetWord.translationStatistic > 0 %}
+                        <span class="badge alert-success">{{ sheetWord.translationStatistic }}</span>
+                    {% elseif sheetWord.translationStatistic < 0 %}
+                        <span class="badge alert-danger">{{ sheetWord.translationStatistic|abs }}</span>
+                    {% else %}
+                        <span class="badge">0</span>
+                    {% endif %}
                 </td>
                 <td>
                     {{ sheetWord.createdOn|date("H:i:s") }}
@@ -69,15 +79,34 @@
             }}">
         Learn words
     </button>
-    <button type="button" class="btn btn-primary load-modal"
-            data-url="{{
-                path(
-                    'practice_translation',
-                    {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
-                )
-            }}">
-        Practice Translation
-    </button>
+
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            Practice Translation <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li>
+                <a href="#" class="load-modal"
+                    data-url="{{
+                        path(
+                            'practice_translation_new_and_not_passed',
+                            {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
+                        )
+                    }}"
+                >New & Not passed</a>
+            </li>
+            <li>
+                <a href="#" class="load-modal"
+                   data-url="{{
+                       path(
+                           'practice_translation_all',
+                           {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
+                       )
+                   }}"
+                >All words</a>
+            </li>
+        </ul>
+    </div>
 {% else %}
     <div role="alert" class="alert alert-info">
         <strong>Info!</strong> For adding words you need to create a Sheet.

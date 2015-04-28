@@ -1,5 +1,5 @@
 <?php
-namespace VocabularyBuilderComponent\Learning;
+namespace VocabularyBuilder\Learning;
 
 use Component\Serializer\SerializableTrait;
 
@@ -36,5 +36,37 @@ class Statistic
     public function addPracticeTranslation(Practice $practice)
     {
         $this->practiceTranslation[] = $practice;
+    }
+
+    public function updatePracticeStatus($status)
+    {
+        /** @var Practice $currentPracticeTranslation */
+        $currentPracticeTranslation = end($this->practiceTranslation);
+
+        if (!$status) {
+            $currentPracticeTranslation->addTry();
+
+            return;
+        }
+
+        if (!$currentPracticeTranslation->getPassed()) {
+            $currentPracticeTranslation->addTry();
+            $currentPracticeTranslation->setPassed(true);
+        } else {
+            $this->addPracticeTranslation(new Practice());
+            $currentPracticeTranslation = end($this->practiceTranslation);
+            $currentPracticeTranslation->addTry();
+            $currentPracticeTranslation->setPassed(true);
+        }
+    }
+
+    public function getCurrentTranslationStatistic()
+    {
+        /** @var Practice $currentPracticeTranslation */
+        $currentPracticeTranslation = end($this->practiceTranslation);
+        $triesCount = $currentPracticeTranslation->getTriesCount();
+        $currentState = $currentPracticeTranslation->getPassed();
+
+        return ($currentState) ? $triesCount : - $triesCount;
     }
 }

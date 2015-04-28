@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 class VocabularyRepository extends EntityRepository
 {
-    public function getAllWords($vocabularyId, $sheetId)
+    public function getAllWords($vocabularyId, $sheetId, $wordStatus = "all")
     {
         $queryBuilder = $this->getEntityManager()
             ->createQueryBuilder()
@@ -29,6 +29,11 @@ class VocabularyRepository extends EntityRepository
                 ->where('sheet.vocabulary = :vocabularyId')
                 ->orWhere('folder.vocabulary = :vocabularyId')
                 ->setParameter('vocabularyId', $vocabularyId);
+        }
+
+        if ($wordStatus == "notPassed") {
+            $queryBuilder
+                ->andWhere("sheet_word.translationStatistic <= 0");
         }
 
         return $queryBuilder

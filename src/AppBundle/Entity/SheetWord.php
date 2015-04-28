@@ -5,7 +5,7 @@ use CommonBundle\Entity\CreatedOnEntityTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use VocabularyBuilderComponent\Learning\Statistic;
+use VocabularyBuilder\Learning\Statistic;
 
 /**
  * @ORM\Entity
@@ -51,14 +51,25 @@ class SheetWord
     /**
      * @var string
      *
-     * @ORM\Column(type="string", name="statistic")
+     * @ORM\Column(name="statistic", type="string")
      */
     private $statistic;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="translation_statistic", type="integer")
+     */
+    private $translationStatistic;
 
     public function __construct()
     {
         $this->createdOn = new DateTime();
         $this->sheetWordTranslations = new ArrayCollection();
+
+        $statistic = new Statistic();
+        $this->statistic = $statistic->serialize();
+        $this->translationStatistic = 0;
     }
 
     /** @return int */
@@ -122,5 +133,15 @@ class SheetWord
         $this->statistic = $statistic->serialize();
     }
 
+    /** @return int */
+    public function getTranslationStatistic()
+    {
+        return $this->translationStatistic;
+    }
 
+    /** @param int $translationStatistic */
+    public function setTranslationStatistic($translationStatistic)
+    {
+        $this->translationStatistic = $translationStatistic;
+    }
 }

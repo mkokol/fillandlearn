@@ -128,21 +128,22 @@ $(".timer").knob({
     max: 360
 });
 $.when(
-    $('.timer').animate({
-        value: 100
-    }, {
-        duration: 1000,
-        easing: 'swing',
-        progress: function () {
-            $(this).val(Math.round(this.value/100*$(this).data('targetValue'))).trigger('change')
+    $('.timer').animate(
+        {value: 100 }
+        , {
+            duration: 1000,
+            easing: 'swing',
+            progress: function () {
+                $(this).val(Math.round(this.value/100*$(this).data('targetValue'))).trigger('change')
+            }
         }
-    })
+    )
 ).then(function(){
     timerId = setTimeout(timerClick, 500);
 });
 
 function timerClick() {
-    time += 360 / 10;
+    time += 360 / 70;
     if (time > 360) {
         time = 0;
         word += 1;

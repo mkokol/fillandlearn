@@ -1,5 +1,5 @@
 <?php
-namespace VocabularyBuilderComponent\Learning;
+namespace VocabularyBuilder\Learning;
 
 use DateTime;
 
@@ -40,7 +40,8 @@ class Practice
 
     public function addTry()
     {
-        $this->tries[] = new DateTime();
+        $now = new DateTime();
+        $this->tries[] = $now->format("d/m/Y H:i:s");
     }
 
     public function getTriesCount()
