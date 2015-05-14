@@ -38,8 +38,12 @@ class Practice
         return $this->tries;
     }
 
-    public function addTry()
+    public function addTry($passed = null)
     {
+        if ($passed !== null) {
+            $this->passed = (bool) $passed;
+        }
+
         $now = new DateTime();
         $this->tries[] = $now->format("d/m/Y H:i:s");
     }

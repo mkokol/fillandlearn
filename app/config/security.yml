@@ -28,6 +28,11 @@ security:
                 csrf_provider: form.csrf_provider
                 intention: authentication
                 default_target_path: vocabulary
+            remember_me:
+                key: "d6ac765f1b1878c2b7285c6c13b8e91a"
+                lifetime: 604800 # 1 week in seconds
+                path: /
+                remember_me_parameter: "remember_me"
             logout:
                 path: user_logout
                 target: /

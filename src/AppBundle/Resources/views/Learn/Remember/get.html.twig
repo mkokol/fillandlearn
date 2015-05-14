@@ -15,6 +15,7 @@
         -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
         box-shadow: 0 3px 6px rgba(0, 0, 0, .175);
     }
+
     .learn-translation:before {
         content: "";
         border-bottom: 10px solid #fff;
@@ -25,37 +26,48 @@
         left: 16px;
         z-index: 10;
     }
+
     .learn-translation:after {
-         content: "";
-         border-bottom: 12px solid #ccc;
-         border-right: 12px solid transparent;
-         border-left: 12px solid transparent;
-         position: absolute;
-         top: -12px;
-         left: 14px;
-         z-index: 9;
+        content: "";
+        border-bottom: 12px solid #ccc;
+        border-right: 12px solid transparent;
+        border-left: 12px solid transparent;
+        position: absolute;
+        top: -12px;
+        left: 14px;
+        z-index: 9;
     }
+
     .learn-translation li {
         border-bottom: 1px solid rgba(0, 0, 0, .15);
         padding: 5px 10px;
     }
+
     .learn-translation li:last-child {
         border-bottom: none;
     }
+
     .timer-msg {
         line-height: 14px;
         font-size: 16px;
         color: #333333;
     }
+
     .timer-msg span {
         display: block;
     }
+
     .timer-msg span:first-child {
         border-bottom: 1px solid #333333;
         padding-bottom: 3px;
     }
+
     .timer-msg span:last-child {
         padding-top: 5px;
+    }
+
+    #run-remembering-again {
+        display: none;
     }
 </style>
 
@@ -69,7 +81,7 @@
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-9 col-xs-9">
                     {% for sheetWord in sheetWords|slice(0, 1) %}
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -87,7 +99,7 @@
                         </ul>
                     {% endfor %}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-xs-3">
                     <div class="timer" data-width="100" data-height="100"
                          data-fgColor="#04b100" data-thickness=".2">
                         <span class="timer-msg">
@@ -99,70 +111,108 @@
             </div>
         </div>
         <div class="modal-footer">
+            <button id="run-remembering-again" type="button" class="btn btn-primary">Run Again</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
 
 <script>
-var timerId = null;
-var time = 0;
-var word = 0;
-var words = [];
+    var timerId = null;
+    var time = 0;
+    var word = 0;
+    var words = [];
 
-{% for sheetWord in sheetWords %}
+    {% for sheetWord in sheetWords %}
     words.push({
         word: '{{ sheetWord.word.word }}',
         translations: [{% spaceless %}
             {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
-                '{{ sheetWordTranslation.translation.translation }}',
+            '{{ sheetWordTranslation.translation.translation }}',
             {% endfor %}
-        {% endspaceless %}]
+            {% endspaceless %}]
     });
-{% endfor %}
+    {% endfor %}
 
-$(".timer").knob({
-    width: 100,
-    height: 100,
-    min: 0,
-    max: 360
-});
-$.when(
-    $('.timer').animate(
-        {value: 100 }
-        , {
-            duration: 1000,
-            easing: 'swing',
-            progress: function () {
-                $(this).val(Math.round(this.value/100*$(this).data('targetValue'))).trigger('change')
+    $(".timer").knob({
+        width: 100,
+        height: 100,
+        min: 0,
+        max: 360
+    });
+    $.when(
+            $('.timer').animate(
+                    {value: 100}
+                    , {
+                        duration: 1000,
+                        easing: 'swing',
+                        progress: function () {
+                            $(this).val(Math.round(this.value / 100 * $(this).data('targetValue'))).trigger('change')
+                        }
+                    }
+            )
+    ).then(
+            function () {
+                timerId = setTimeout(timerClick, 500);
             }
+    );
+
+    $("#run-remembering-again").click(function(){
+        $("#run-remembering-again").hide();
+        words = shuffle(words);
+        word = 0;
+        showWord(0);
+        timerId = setTimeout(timerClick, 100);
+    });
+
+    function timerClick() {
+        $('.timer').val(time).trigger("change");
+        timerId = setTimeout(timerClick, 100);
+
+        time += 360 / 90;
+        if (time > 360) {
+            time = 0;
+            word += 1;
+            showWord(word);
         }
-    )
-).then(function(){
-    timerId = setTimeout(timerClick, 500);
-});
-
-function timerClick() {
-    time += 360 / 70;
-    if (time > 360) {
-        time = 0;
-        word += 1;
-        showWord(word);
     }
-    $('.timer').val(time).trigger("change");
-    timerId = setTimeout(timerClick, 100);
-}
-function showWord(index) {
-    $("#word").text(words[index].word);
-    var translations = '';
-    for (i = 0; i < words[index].translations.length; i++) {
-        translations += '<li>' + words[index].translations[i] + '</li>';
-    }
-    $("#current-word-number").html(index + 1);
-    $("#translations").html(translations);
-}
-function modalRemove() {
-    clearTimeout(timerId)
-}
 
+    function showWord(index) {
+        if (index < words.length) {
+            $("#word").text(words[index].word);
+            var translations = '';
+            for (var i = 0; i < words[index].translations.length; i++) {
+                translations += '<li>' + words[index].translations[i] + '</li>';
+            }
+            $("#current-word-number").html(index + 1);
+            $("#translations").html(translations);
+        }else {
+            clearTimeout(timerId);
+            $("#run-remembering-again").show();
+        }
+    }
+
+    function modalRemove() {
+        clearTimeout(timerId);
+    }
+
+    function shuffle(array) {
+        var counter = array.length, temp, index;
+
+        // While there are elements in the array
+        while (counter > 0) {
+            // Pick a random index
+            index = Math.floor(Math.random() * counter);
+
+            // Decrease counter by 1
+            counter--;
+
+            // And swap the last element with it
+            temp = array[counter];
+            array[counter] = array[index];
+            array[index] = temp;
+        }
+
+        return array;
+    }
 </script>

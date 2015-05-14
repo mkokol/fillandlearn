@@ -43,20 +43,12 @@ class Statistic
         /** @var Practice $currentPracticeTranslation */
         $currentPracticeTranslation = end($this->practiceTranslation);
 
-        if (!$status) {
-            $currentPracticeTranslation->addTry();
-
-            return;
-        }
-
         if (!$currentPracticeTranslation->getPassed()) {
-            $currentPracticeTranslation->addTry();
-            $currentPracticeTranslation->setPassed(true);
+            $currentPracticeTranslation->addTry($status);
         } else {
-            $this->addPracticeTranslation(new Practice());
-            $currentPracticeTranslation = end($this->practiceTranslation);
-            $currentPracticeTranslation->addTry();
-            $currentPracticeTranslation->setPassed(true);
+            $newPractice = new Practice();
+            $newPractice->addTry($status);
+            $this->addPracticeTranslation($newPractice);
         }
     }
 

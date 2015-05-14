@@ -48,10 +48,6 @@
         border-bottom: none;
     }
 
-    .progress-bar-status-out-bar, .progress-bar-status-in-bar {
-        padding: 0 5px 0 5px;
-    }
-
     .progress-msg {
         line-height: 14px;
         font-size: 16px;
@@ -118,6 +114,10 @@
                             <span>{{ sheetWords|length }}</span>
                         </span>
                     </div>
+                    <div style="display: inline-block; width: 100px;">
+                        <span id="success-count" class="badge alert-success">0</span>
+                        <span id="error-count" class="badge alert-danger pull-right">0</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,6 +130,8 @@
 <script>
 
     var word = 0;
+    var successWordsCount = 0;
+    var errorWordsCount = 0;
     var words = [];
 
     {% for sheetWord in sheetWords %}
@@ -177,10 +179,12 @@
 
         if (isCorrect) {
             $("#input-translation-group").addClass("has-success");
+            $("#success-count").text(parseInt($("#success-count").text()) + 1);
             saveWordStatus(words[word].id, 1);
         } else {
             $("#input-translation-group").addClass("has-error");
             saveWordStatus(words[word].id, 0);
+            $("#error-count").text(parseInt($("#error-count").text()) + 1);
         }
     });
 
