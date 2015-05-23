@@ -24,7 +24,6 @@ class AddController extends Controller
      *      "/vocabulary/{vocabularyId}/sheet/{sheetId}/word/add/",
      *      name="vocabulary_word_add"
      * )
-     *
      * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:VocabularyWords/Word/Add:get.html.twig")
      * @Method({"GET"})
