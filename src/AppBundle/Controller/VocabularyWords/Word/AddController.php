@@ -71,7 +71,9 @@ class AddController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            /** @var Word $word */
             $word = $form->getData();
+
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($word);
             $em->flush();

@@ -47,7 +47,11 @@
     }
     $(document).on('click', '.add-translation', function () {
         $(this).removeClass('add-translation').addClass('remove-translation');
-        $('#translations').append($('#translations').data('prototype'));
+        var fieldPrototype = $('#translations').data('prototype').replace(
+                new RegExp('__name__', 'g'),
+                $("#translations input[type=text]").length
+        );
+        $('#translations').append(fieldPrototype);
     });
     $(document).on('click', '.remove-translation', function () {
         $(this).parents('.input-group').remove();
