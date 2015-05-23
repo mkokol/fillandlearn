@@ -18,8 +18,8 @@ class ViewController extends Controller
      *      name="vocabulary_tree",
      *      defaults={"sheetId" = null}
      * )
-     * @ParamConverter("entity", class="AppBundle:Vocabulary")
-     * @ParamConverter("sheet", class="AppBundle:Sheet")
+     * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
+     * @ParamConverter(name="sheet", class="AppBundle:Sheet")
      * @Template("AppBundle:VocabularyTree/View:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")

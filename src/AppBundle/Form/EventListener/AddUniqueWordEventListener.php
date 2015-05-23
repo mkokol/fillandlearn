@@ -66,6 +66,23 @@ class AddUniqueWordEventListener implements EventSubscriberInterface
         foreach ($newWord->getTranslations()->toArray() as $newTranslation) {
             $this->addIfWordDosNotContainTranslation($existedWord, $newTranslation);
         }
+
+        /** @var Translation $translation */
+        foreach ($existedWord->getTranslations()->toArray() as $existedTranslation) {
+            $this->removeIfUserDosNotUseTranslation($newWord, $existedTranslation);
+        }
+    }
+
+    private function removeIfUserDosNotUseTranslation(Word $newWord, Translation $existedTranslation)
+    {
+        /** @var Translation $newTranslation */
+        foreach ($newWord->getTranslations()->toArray() as $newTranslation) {
+            if ($existedTranslation->getTranslation() == $newTranslation->getTranslation()) {
+                return;
+            }
+        }
+
+        $this->sheetWord->removeTranslationFromSheetWord($existedTranslation);
     }
 
     private function addIfWordDosNotContainTranslation(Word $existedWord, Translation $newTranslation)
@@ -88,6 +105,12 @@ class AddUniqueWordEventListener implements EventSubscriberInterface
 
     private function addTranslationToSheetWord($translation)
     {
+        foreach ($this->sheetWord->getSheetWordTranslations()->toArray() as $sheetWordTranslation) {
+            if ($sheetWordTranslation->getTranslation()->getTranslation() == $translation->getTranslation()) {
+                return;
+            }
+        }
+
         $sheetWordTranslation = new SheetWordTranslation();
         $sheetWordTranslation->setTranslation($translation);
         $this->sheetWord->addSheetWordTranslation($sheetWordTranslation);

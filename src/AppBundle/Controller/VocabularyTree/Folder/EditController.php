@@ -16,7 +16,7 @@ class EditController extends Controller
 {
     /**
      * @Route("/vocabulary/{vocabularyId}/folder/edit/{folderId}/", name="folder_edit")
-     * @ParamConverter("folder", class="AppBundle:Folder")
+     * @ParamConverter(name="folder", class="AppBundle:Folder")
      * @Template("AppBundle:VocabularyTree/Folder/Edit:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
@@ -38,7 +38,7 @@ class EditController extends Controller
 
     /**
      * @Route("/vocabulary/{vocabularyId}/folder/edit/{folderId}/", name="folder_edit_post")
-     * @ParamConverter("folder", class="AppBundle:Folder")
+     * @ParamConverter(name="folder", class="AppBundle:Folder")
      * @Template("AppBundle:VocabularyTree/Folder/Edit:get.html.twig")
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")

@@ -1,7 +1,9 @@
+{% set cssClass = (addMore) ? 'add-translation' : 'remove-translation' %}
+
 <div class="input-group" style="padding-bottom: 10px;">
     {{ form_widget(form.translation) }}
     <span class="input-group-btn">
-        <button class="btn btn-default add-translation" type="button">
+        <button class="btn btn-default {{ cssClass }}" type="button">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
         </button>

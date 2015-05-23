@@ -1,9 +1,9 @@
 {% if sheet %}
     <style>
-        table span:after {
+        table .translations span:after {
             content: ";";
         }
-        table span:last-child:after {
+        table .translations span:last-child:after {
             content: "";
         }
     </style>
@@ -14,7 +14,7 @@
             <th>Translation</th>
             <th style="width: 60px;">State</th>
             <th style="width: 75px;">Created</th>
-            <th style="text-align: right; width: 40px;">
+            <th style="text-align: right; width: 60px;">
                 <a href="#">
                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                 </a>
@@ -25,7 +25,7 @@
         {% for sheetWord in sheet.sheetWord %}
             <tr>
                 <td>{{ sheetWord.word.word }}</td>
-                <td>
+                <td class="translations">
                     {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
                         <span>{{ sheetWordTranslation.translation.translation }}</span>
                     {% endfor %}
@@ -43,6 +43,18 @@
                     {{ sheetWord.createdOn|date("H:i:s") }}
                 </td>
                 <td>
+                    <span class="glyphicon glyphicon-pencil load-modal" aria-hidden="true" data-method="post"
+                          data-url="{{
+                              path(
+                                  'sheet_word_edit',
+                                  {
+                                      'vocabularyId': vocabulary.vocabularyId,
+                                      'sheetId': sheet.sheetId,
+                                      'sheetWordId': sheetWord.sheetWordId
+                                  }
+                              )
+                          }}"
+                    ></span>
                     <span class="glyphicon glyphicon-trash link-as-form" aria-hidden="true" data-method="delete"
                           data-url="{{
                               path(
@@ -53,8 +65,8 @@
                                       'sheetWordId': sheetWord.sheetWordId
                                   }
                               )
-                          }}">
-                    </span>
+                          }}"
+                    ></span>
                 </td>
             </tr>
         {% endfor %}
@@ -84,7 +96,7 @@
                            {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
                        )
                    }}"
-                        >New & Not passed</a>
+                        >Not passed</a>
             </li>
             <li>
                 <a href="#" class="load-modal"
@@ -112,7 +124,7 @@
                             {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
                         )
                     }}"
-                >New & Not passed</a>
+                >Not passed</a>
             </li>
             <li>
                 <a href="#" class="load-modal"

@@ -18,7 +18,7 @@ class EditController extends Controller
      *      "/edit/{vocabularyId}/",
      *      name="vocabulary_edit"
      * )
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
+     * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:Vocabulary/Edit:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
@@ -40,7 +40,7 @@ class EditController extends Controller
      *      "/edit/{vocabularyId}/",
      *      name="vocabulary_edit_post"
      * )
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
+     * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:Vocabulary/Edit:get.html.twig")
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")

@@ -19,11 +19,14 @@
 
             {% set prototypePath = 'AppBundle:VocabularyWords/Word/Add:_prototype.html.twig' %}
             <div id="translations" class="form-group"
-                 data-prototype="{{ include(prototypePath, { 'form': form.translations.vars.prototype })|e }}">
+                 data-prototype="{{ include(prototypePath, { 'form': form.translations.vars.prototype, 'addMore': true })|e }}">
                 {{ form_label(form.translations) }}
-                {% for translation in form.translations %}
-                    {{ include(prototypePath, { 'form': translation }) }}
+
+                {% for translation in form.translations|slice(0, form.translations|length - 1) %}
+                    {{ include(prototypePath, { 'form': translation, 'addMore': false }) }}
                 {% endfor %}
+
+                {{ include(prototypePath, { 'form': form.translations[form.translations|length - 1], 'addMore': true }) }}
             </div>
         </div>
         <div class="modal-footer">
@@ -45,14 +48,17 @@
             }
         });
     }
+    $(document).off('click', '.add-translation');
     $(document).on('click', '.add-translation', function () {
         $(this).removeClass('add-translation').addClass('remove-translation');
         var fieldPrototype = $('#translations').data('prototype').replace(
                 new RegExp('__name__', 'g'),
                 $("#translations input[type=text]").length
         );
+        console.log(fieldPrototype);
         $('#translations').append(fieldPrototype);
     });
+    $(document).off('click', '.remove-translation');
     $(document).on('click', '.remove-translation', function () {
         $(this).parents('.input-group').remove();
     });

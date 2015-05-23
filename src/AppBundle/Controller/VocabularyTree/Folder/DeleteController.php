@@ -13,7 +13,7 @@ class DeleteController extends Controller
 {
     /**
      * @Route("/vocabulary/{vocabularyId}/folder/delete/{folderId}/", name="folder_delete")
-     * @ParamConverter("folder", class="AppBundle:Folder")
+     * @ParamConverter(name="folder", class="AppBundle:Folder")
      * @Method({"DELETE"})
      * @Security("has_role('ROLE_USER')")
      */

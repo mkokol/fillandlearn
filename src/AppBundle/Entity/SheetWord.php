@@ -43,7 +43,7 @@ class SheetWord
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SheetWordTranslation", mappedBy="sheetWord", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SheetWordTranslation", mappedBy="sheetWord", cascade={"all"}, orphanRemoval=true)
      * @ORM\JoinColumn(name="sheet_word_id", referencedColumnName="sheet_word_id")
      */
     private $sheetWordTranslations;
@@ -108,6 +108,17 @@ class SheetWord
         $this->word = $word;
     }
 
+    public function getTranslations()
+    {
+        $translations = [];
+
+        foreach ($this->sheetWordTranslations as $sheetWordTranslation) {
+            $translations[] = $sheetWordTranslation->getTranslation();
+        }
+
+        return $translations;
+    }
+
     /** @return SheetWord[] */
     public function getSheetWordTranslations()
     {
@@ -119,6 +130,22 @@ class SheetWord
     {
         $sheetWordTranslation->setSheetWord($this);
         $this->sheetWordTranslations->add($sheetWordTranslation);
+    }
+
+    public function removeTranslationFromSheetWord(Translation $translation)
+    {
+        $sheetWordTranslationForRemove = null;
+
+        /** @var SheetWordTranslation $sheetWordTranslation */
+        foreach ($this->sheetWordTranslations->toArray() as $key => $sheetWordTranslation) {
+            if ($sheetWordTranslation->getTranslation()->getTranslation() == $translation->getTranslation()) {
+                $sheetWordTranslationForRemove = $sheetWordTranslation;
+            }
+        }
+
+        if ($sheetWordTranslationForRemove) {
+            $this->sheetWordTranslations->removeElement($sheetWordTranslationForRemove);
+        }
     }
 
     /** @return Statistic */

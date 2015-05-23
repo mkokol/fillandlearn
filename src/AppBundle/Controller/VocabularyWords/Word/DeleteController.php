@@ -16,7 +16,7 @@ class DeleteController extends Controller
      *      "/vocabulary/{vocabularyId}/sheet/{sheetId}/word/{sheetWordId}/delete/",
      *      name="sheet_word_delete"
      * )
-     * @ParamConverter("sheetWord", class="AppBundle:SheetWord")
+     * @ParamConverter(name="sheetWord", class="AppBundle:SheetWord")
      * @Method({"DELETE"})
      * @Security("has_role('ROLE_USER')")
      */

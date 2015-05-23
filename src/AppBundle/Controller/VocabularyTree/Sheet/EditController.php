@@ -21,7 +21,7 @@ class EditController extends Controller
      *
      * @Route("/vocabulary/{vocabularyId}/sheet/edit/{sheetId}/", name="sheet_edit")
      * @Template("AppBundle:VocabularyTree/Sheet/Edit:get.html.twig")
-     * @ParamConverter("sheet", class="AppBundle:Sheet")
+     * @ParamConverter(name="sheet", class="AppBundle:Sheet")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
@@ -47,8 +47,8 @@ class EditController extends Controller
      * @return mixed
      *
      * @Route("/vocabulary/{vocabularyId}/sheet/edit/{sheetId}/", name="sheet_edit_post")
-     * @ParamConverter("sheet", class="AppBundle:Sheet")
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
+     * @ParamConverter(name="sheet", class="AppBundle:Sheet")
+     * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:VocabularyTree/Sheet/Edit:get.html.twig")
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")

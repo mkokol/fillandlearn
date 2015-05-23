@@ -15,7 +15,7 @@ class DeleteController extends Controller
      *      "/delete/{vocabularyId}/",
      *      name="vocabulary_delete"
      * )
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
+     * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
      * @Method({"DELETE"})
      * @Security("has_role('ROLE_USER')")
      */

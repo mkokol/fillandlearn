@@ -35,7 +35,7 @@ class AddController extends Controller
 
     /**
      * @Route("/{vocabularyId}/folder/add/", name="folder_add_post")
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
+     * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:VocabularyTree/Folder/Add:get.html.twig")
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")

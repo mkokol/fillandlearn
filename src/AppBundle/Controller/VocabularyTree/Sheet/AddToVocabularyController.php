@@ -17,7 +17,7 @@ class AddToVocabularyController extends Controller
 {
     /**
      * @Route("/vocabulary/{vocabularyId}/sheet/add/", name="vocabulary_sheet_add")
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
+     * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:VocabularyTree/Sheet/AddTo:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
@@ -37,7 +37,7 @@ class AddToVocabularyController extends Controller
 
     /**
      * @Route("/vocabulary/{vocabularyId}/sheet/add/", name="vocabulary_sheet_add_post")
-     * @ParamConverter("vocabulary", class="AppBundle:Vocabulary")
+     * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
      * @Template("AppBundle:VocabularyTree/Sheet/AddTo:get.html.twig")
      * @Method({"POST"})
      * @Security("has_role('ROLE_USER')")

@@ -33,13 +33,18 @@ class WordFormType extends AbstractType
                 'label_attr' => ['placeholder' => 'Word'],
                 'attr'       => ['class' => 'form-control']
             ])
-            ->add('translations', 'collection', [
-                'type'         => 'translation',
-                'allow_add'    => true,
-                'allow_delete' => true,
-                'prototype'    => true,
-                'by_reference' => false
-            ])
+            ->add('translations', 'collection',
+                array_merge(
+                    [
+                        'type'         => 'translation',
+                        'allow_add'    => true,
+                        'allow_delete' => true,
+                        'prototype'    => true,
+                        'by_reference' => false,
+                    ],
+                    (is_object($options['sheetWord'])) ? ['data' => $options['sheetWord']->getTranslations()] : []
+                )
+            )
             ->addEventSubscriber($addUniqueWordEventListener);
     }
 

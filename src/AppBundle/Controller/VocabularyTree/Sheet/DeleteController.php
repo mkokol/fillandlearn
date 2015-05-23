@@ -13,7 +13,7 @@ class DeleteController extends Controller
 {
     /**
      * @Route("/vocabulary/{vocabularyId}/sheet/delete/{sheetId}/", name="sheet_delete")
-     * @ParamConverter("sheet", class="AppBundle:Sheet")
+     * @ParamConverter(name="sheet", class="AppBundle:Sheet")
      * @Method({"DELETE"})
      * @Security("has_role('ROLE_USER')")
      */
