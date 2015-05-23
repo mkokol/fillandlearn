@@ -10,3 +10,16 @@
         {{ include('AppBundle:VocabularyWords/Word/Add:_form.html.twig', { 'form': form }) }}
     </div>
 </div>
+
+<script>
+    function modalInit() {
+        $('#word-form').ajaxForm({
+            dataType: 'json',
+            success: function (data) {
+                if (data.status == 'success') {
+                    location.reload();
+                }
+            }
+        });
+    }
+</script>

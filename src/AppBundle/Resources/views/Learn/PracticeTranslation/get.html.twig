@@ -53,17 +53,23 @@
         font-size: 16px;
         color: #333333;
     }
+
     .progress-msg span {
         display: block;
     }
+
     .progress-msg span:first-child {
         border-bottom: 1px solid #333333;
         padding-bottom: 3px;
     }
+
     .progress-msg span:last-child {
         padding-top: 5px;
     }
 
+    #edit-word {
+        display: none;
+    }
 </style>
 
 <div class="modal-dialog">
@@ -74,55 +80,64 @@
             </button>
             <h4 class="modal-title" id="myModalLabel">Practice Translation.</h4>
         </div>
-        <div class="modal-body">
-            <div class="row">
-                <div class="col-md-9 col-xs-9">
-                    {% for sheetWord in sheetWords|slice(0, 1) %}
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 id="word" class="panel-title">
-                                    {{ sheetWord.word.word }}
-                                </h3>
+        <div id="practice-words">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-9 col-xs-9">
+                        {% for sheetWord in sheetWords|slice(0, 1) %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 id="word" class="panel-title pull-left">
+                                        {{ sheetWord.word.word }}
+                                    </h3>
+                                <span id="edit-word" class="pull-right glyphicon glyphicon-pencil" aria-hidden="true"
+                                      data-vocabulary-id="{{ vocabulary.vocabularyId }}"></span>
+                                    <div class="clearfix"></div>
+                                </div>
                             </div>
-                        </div>
-                        <ul id="translations" class="learn-translation">
-                            {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
-                                <li>
-                                    {{ sheetWordTranslation.translation.translation }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <div id="input-translation-group" class="form-group">
-                            <label class="control-label" for="input-translation">Input translation</label>
+                            <ul id="view-translations" class="learn-translation">
+                                {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
+                                    <li>
+                                        {{ sheetWordTranslation.translation.translation }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div id="input-translation-group" class="form-group">
+                                <label class="control-label" for="input-translation">Input translation</label>
 
-                            <div class="input-group">
-                                <input id="input-translation" type="text" class="form-control">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default add-translation" type="button">
-                                        <span id="next-word" class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-                                    </button>
-                                </span>
+                                <div class="input-group">
+                                    <input id="input-translation" type="text" class="form-control">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default add-translation" type="button">
+                                            <span id="next-word" class="glyphicon glyphicon-share-alt"
+                                                  aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="col-md-3 col-xs-3">
-                    <div class="learning-progress" data-width="100" data-height="100"
-                         data-fgColor="#04b100" data-thickness=".2" data-readOnly=true>
+                        {% endfor %}
+                    </div>
+                    <div class="col-md-3 col-xs-3">
+                        <div class="learning-progress" data-width="100" data-height="100"
+                             data-fgColor="#04b100" data-thickness=".2" data-readOnly=true>
                         <span class="progress-msg">
                             <span id="current-word-number">1</span>
                             <span>{{ sheetWords|length }}</span>
                         </span>
-                    </div>
-                    <div style="display: inline-block; width: 100px;">
-                        <span id="success-count" class="badge alert-success">0</span>
-                        <span id="error-count" class="badge alert-danger pull-right">0</span>
+                        </div>
+                        <div style="display: inline-block; width: 100px;">
+                            <span id="success-count" class="badge alert-success">0</span>
+                            <span id="error-count" class="badge alert-danger pull-right">0</span>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <div id="edit-word-form">
+
         </div>
     </div>
 </div>
@@ -138,11 +153,7 @@
     words.push({
         id: '{{ sheetWord.sheetWordId }}',
         word: '{{ sheetWord.word.word }}',
-        translations: [{% spaceless %}
-            {% for sheetWordTranslation in sheetWord.sheetWordTranslations %}
-            '{{ sheetWordTranslation.translation.translation }}',
-            {% endfor %}
-            {% endspaceless %}]
+        translations: [{% for sheetWordTranslation in sheetWord.sheetWordTranslations %}'{{ sheetWordTranslation.translation.translation }}',{% endfor %}]
     });
     {% endfor %}
 
@@ -150,6 +161,8 @@
         if (e.which == 13) {
             $("#next-word").click();
         }
+
+        return;
     });
 
     $("#next-word").click(function () {
@@ -164,6 +177,7 @@
             || $("#input-translation-group").hasClass("has-success")
         ) {
             showNextWord();
+            $('#edit-word').hide();
             return;
         }
 
@@ -174,8 +188,8 @@
                 isCorrect = true;
             }
         }
-
         showTranslations();
+        $('#edit-word').show();
 
         if (isCorrect) {
             $("#input-translation-group").addClass("has-success");
@@ -186,6 +200,36 @@
             saveWordStatus(words[word].id, 0);
             $("#error-count").text(parseInt($("#error-count").text()) + 1);
         }
+
+        return;
+    });
+
+    $("#edit-word").click(function () {
+        $.ajax({
+            method: "GET",
+            url: '/tree/vocabulary/' + $(this).data('vocabulary-id') + '/sheet/word/' + words[word].id + '/edit/form/',
+            success: function (data) {
+                $('#practice-words').hide();
+                $('#edit-word-form').html(data);
+                $('#word-form').ajaxForm({
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.status == 'success') {
+                            $("#word").text($('#word_word').val());
+                            var translations = [];
+                            $.each($('#translations input[type=text]'), function(key,value){
+                                translations.push($(value).val());
+                            });
+                            words[word].translations = translations;
+                            showTranslations();
+                            $('#practice-words').show();
+                            $('#edit-word-form').html('');
+                            $('#input-translation').focus();
+                        }
+                    }
+                });
+            }
+        });
     });
 
     function showTranslations() {
@@ -193,7 +237,7 @@
         for (var i = 0; i < words[word].translations.length; i++) {
             translations += '<li>' + words[word].translations[i] + '</li>';
         }
-        $("#translations").html(translations).show();;
+        $("#view-translations").html(translations).show();
     }
 
     function showNextWord() {
@@ -201,7 +245,7 @@
         $("#current-word-number").html(word + 1);
         if (word < words.length) {
             word++;
-            $("#translations").hide();
+            $("#view-translations").hide();
             $("#input-translation-group").removeClass("has-success").removeClass("has-error");
             $("#word").text(words[word].word);
             $("#input-translation").val('');
@@ -221,7 +265,7 @@
         min: 0,
         max: {{ sheetWords|length }},
         easing: 'swing',
-        readOnly:true
+        readOnly: true
     });
 
     $("#input-translation").focus();

@@ -28,16 +28,6 @@
 {{ form_end(form) }}
 
 <script>
-    function modalInit() {
-        $('#word-form').ajaxForm({
-            dataType: 'json',
-            success: function (data) {
-                if (data.status == 'success') {
-                    location.reload();
-                }
-            }
-        });
-    }
     $(document).off('click', '.add-translation');
     $(document).on('click', '.add-translation', function () {
         $(this).removeClass('add-translation').addClass('remove-translation');
@@ -45,11 +35,10 @@
                 new RegExp('__name__', 'g'),
                 $("#translations input[type=text]").length
         );
-        console.log(fieldPrototype);
         $('#translations').append(fieldPrototype);
     });
     $(document).off('click', '.remove-translation');
     $(document).on('click', '.remove-translation', function () {
-        $(this).parents('.input-group').remove();
+        $(this).parents('.input-group-new-words').remove();
     });
 </script>

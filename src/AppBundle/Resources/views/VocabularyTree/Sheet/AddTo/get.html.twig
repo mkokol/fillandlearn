@@ -26,7 +26,6 @@
         $('#sheet-form').ajaxForm({
             dataType: 'json',
             success: function (data) {
-                console.log(data);
                 if (data.status == 'success') {
                     location.reload();
                 }

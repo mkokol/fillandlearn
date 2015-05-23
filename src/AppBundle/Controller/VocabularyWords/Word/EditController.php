@@ -24,7 +24,6 @@ class EditController extends Controller
      *      "/vocabulary/{vocabularyId}/sheet/word/{sheetWordId}/edit/",
      *      name="sheet_word_edit"
      * )
-     *
      * @ParamConverter(name="sheetWord", class="AppBundle:SheetWord")
      * @Template("AppBundle:VocabularyWords/Word/Edit:get.html.twig")
      * @Method({"GET"})
@@ -32,12 +31,32 @@ class EditController extends Controller
      */
     public function getAction($vocabularyId, SheetWord $sheetWord)
     {
+        return $this->buildEditWordForm($vocabularyId, $sheetWord);
+    }
+
+    /**
+     * @Route(
+     *      "/vocabulary/{vocabularyId}/sheet/word/{sheetWordId}/edit/form/",
+     *      name="sheet_word_edit_form"
+     * )
+     * @ParamConverter(name="sheetWord", class="AppBundle:SheetWord")
+     * @Template("AppBundle:VocabularyWords/Word/Add:_form.html.twig")
+     * @Method({"GET"})
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function getFormAction($vocabularyId, SheetWord $sheetWord)
+    {
+        return $this->buildEditWordForm($vocabularyId, $sheetWord);
+    }
+
+    private function buildEditWordForm($vocabularyId, SheetWord $sheetWord)
+    {
         $form = $this->createForm('word', $sheetWord->getWord(), [
-            'action' => $this->generateUrl('sheet_word_edit_post', [
+            'action'    => $this->generateUrl('sheet_word_edit_post', [
                 'vocabularyId' => $vocabularyId,
                 'sheetWordId'  => $sheetWord->getSheetWordId()
             ]),
-            'sheetWord'  => $sheetWord
+            'sheetWord' => $sheetWord
         ]);
 
         return ['form' => $form->createView()];

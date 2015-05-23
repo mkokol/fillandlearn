@@ -11,7 +11,7 @@ class RememberController extends Controller
 {
     /**
      * @Route(
-     *      "/vocabulary/{vocabularyId}/sheet/{sheetId}/remember/all",
+     *      "/vocabulary/{vocabularyId}/sheet/{sheetId}/remember/all/",
      *      name="remember_word_all"
      * )
      * @Template("AppBundle:Learn/Remember:get.html.twig")
@@ -30,7 +30,7 @@ class RememberController extends Controller
 
     /**
      * @Route(
-     *      "/vocabulary/{vocabularyId}/sheet/{sheetId}/remember/new",
+     *      "/vocabulary/{vocabularyId}/sheet/{sheetId}/remember/new/",
      *      name="remember_word_new_and_not_passed"
      * )
      * @Template("AppBundle:Learn/Remember:get.html.twig")
