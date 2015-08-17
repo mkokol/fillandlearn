@@ -21,7 +21,8 @@ class ListController extends Controller
     public function getAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $vocabularies = $em->getRepository('AppBundle:Vocabulary')->findall();
+        $vocabularies = $em->getRepository('AppBundle:Vocabulary')
+            ->findByUser($this->getUser());
 
         return ['vocabularies' => $vocabularies];
     }

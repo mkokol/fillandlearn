@@ -1,6 +1,4 @@
-{% set sheetId = (sheet is null) ? null : sheet.sheetId %}
-
-{% macro shwFolder(vocabulary, folder, cssClass) %}
+{% macro showFolder(vocabulary, folder, cssClass) %}
     <li class="list-group-item type-folder">
         <span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span>
         {{ folder.name }}
@@ -15,7 +13,7 @@
     </li>
 {% endmacro %}
 
-{% macro shwSheets(vocabulary, sheets, sheetId, cssClass) %}
+{% macro showSheets(vocabulary, sheets, sheetId, cssClass) %}
     {% for sheet in sheets %}
         <li class="list-group-item {{ cssClass }} link{% if sheetId == sheet.sheetId %} active{% endif %}"
             data-url="{{ path('vocabulary_sheet_view', {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}) }}">
@@ -50,14 +48,14 @@
         <div id="collapseOne" class="panel-collapse collapse in">
             <ul class="list-group">
                 {% for folder in vocabulary.folders %}
-                    {{ _self.shwFolder(vocabulary, folder, 'type-folder') }}
+                    {{ _self.showFolder(vocabulary, folder, 'type-folder') }}
 
                     {% if folder.hasSheets %}
-                        {{ _self.shwSheets(vocabulary, folder.sheets, sheetId, 'type-folder-sheet') }}
+                        {{ _self.showSheets(vocabulary, folder.sheets, sheetId, 'type-folder-sheet') }}
                     {% endif %}
                 {% endfor %}
 
-                {{ _self.shwSheets(vocabulary, vocabulary.sheets, sheetId, 'type-sheet') }}
+                {{ _self.showSheets(vocabulary, vocabulary.sheets, sheetId, 'type-sheet') }}
             </ul>
         </div>
     </div>

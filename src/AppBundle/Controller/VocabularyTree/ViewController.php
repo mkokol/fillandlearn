@@ -19,16 +19,15 @@ class ViewController extends Controller
      *      defaults={"sheetId" = null}
      * )
      * @ParamConverter(name="vocabulary", class="AppBundle:Vocabulary")
-     * @ParamConverter(name="sheet", class="AppBundle:Sheet")
      * @Template("AppBundle:VocabularyTree/View:get.html.twig")
      * @Method({"GET"})
      * @Security("has_role('ROLE_USER')")
      */
-    public function getAction(Vocabulary $vocabulary, Sheet $sheet = null)
+    public function getAction(Vocabulary $vocabulary, $sheetId = null)
     {
         return [
             'vocabulary' => $vocabulary,
-            'sheet'      => $sheet
+            'sheetId'      => $sheetId
         ];
     }
 }

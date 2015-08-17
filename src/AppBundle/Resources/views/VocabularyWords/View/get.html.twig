@@ -12,9 +12,9 @@
         <tr>
             <th>Word</th>
             <th>Translation</th>
-            <th style="width: 60px;">State</th>
-            <th style="width: 75px;">Created</th>
-            <th style="text-align: right; width: 60px;">
+            <th class="hidden-xs" style="width: 60px;">State</th>
+            <th class="hidden-xs" style="width: 75px;">Created</th>
+            <th class="hidden-xs" style="text-align: right; width: 60px;">
                 <a href="#">
                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
                 </a>
@@ -30,7 +30,7 @@
                         <span>{{ sheetWordTranslation.translation.translation }}</span>
                     {% endfor %}
                 </td>
-                <td>
+                <td class="hidden-xs">
                     {% if sheetWord.translationStatistic > 0 %}
                         <span class="badge alert-success">{{ sheetWord.translationStatistic }}</span>
                     {% elseif sheetWord.translationStatistic < 0 %}
@@ -39,10 +39,10 @@
                         <span class="badge">0</span>
                     {% endif %}
                 </td>
-                <td>
+                <td class="hidden-xs">
                     {{ sheetWord.createdOn|date("H:i:s") }}
                 </td>
-                <td>
+                <td class="hidden-xs">
                     <span class="glyphicon glyphicon-pencil load-modal" aria-hidden="true" data-method="post"
                           data-url="{{
                               path(
@@ -75,13 +75,12 @@
                     'vocabulary_word_add',
                     {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
                 )
-            }}">
-        Add word
-    </button>
+            }}"
+    >Add word</button>
 
     <div class="btn-group">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            Learn words <span class="caret"></span>
+            Learn <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
             <li>
@@ -92,7 +91,7 @@
                            {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
                        )
                    }}"
-                        >Not passed</a>
+                >Not passed</a>
             </li>
             <li>
                 <a href="#" class="load-modal"
@@ -102,14 +101,14 @@
                            {'vocabularyId': vocabulary.vocabularyId, 'sheetId': sheet.sheetId}
                        )
                    }}"
-                        >All words</a>
+                >All words</a>
             </li>
         </ul>
     </div>
 
     <div class="btn-group">
         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            Practice Translation <span class="caret"></span>
+            Practice <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
             <li>
