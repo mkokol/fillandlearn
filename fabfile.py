@@ -16,6 +16,8 @@ def deploy():
     run("mkdir /var/www/fillandlearn.com.new");
     put("./update-fill-and-learn.tar.gz", "/var/www/fillandlearn.com.new/")
 
+    run("php  -r 'opcache_reset();'")
+
     with cd("/var/www/fillandlearn.com.new/"):
         run("tar -xzf update-fill-and-learn.tar.gz")
         run("rm update-fill-and-learn.tar.gz")
@@ -24,8 +26,12 @@ def deploy():
         run("chmod 777 -Rf ./logs")
         run("php app/console assetic:dump --env=prod --no-debug")
 
+
     run("mv /var/www/fillandlearn.com /var/www/fillandlearn.com.old");
     run("mv /var/www/fillandlearn.com.new /var/www/fillandlearn.com");
+
+    with cd("/var/www/fillandlearn.com/"):
+        run("php vendor/phing/phing/bin/phing.php")
 
     run("php  -r 'opcache_reset();'")
     run("sudo service php5-fpm restart")

@@ -59,7 +59,7 @@ class WebDriverTest extends TestsForBrowsers
             return true;
         }
         $this->markTestSkipped(
-            'Requires Selenium2 Server running on port 4455'
+            'Requires Selenium2 Server running on port 4444'
         );
         return false;
     }
@@ -507,6 +507,12 @@ class WebDriverTest extends TestsForBrowsers
         // confirm that it did what we expected and did not do anything else
         $this->module->seeOptionIsSelected('input[name=first_test_radio]', 'Yes');
         $this->module->dontSeeOptionIsSelected('input[name=first_test_radio]', 'No');
+    }
+    
+    public function testBug2046()
+    {
+        $this->module->webDriver = null;
+        $this->module->_saveScreenshot(\Codeception\Configuration::outputDir().'testshot.png');
     }
 
 }

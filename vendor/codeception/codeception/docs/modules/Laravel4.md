@@ -5,10 +5,8 @@
 
 
 This module allows you to run functional tests for Laravel 4.
-Module is very fresh and should be improved with Laravel testing capabilities.
-Please try it and leave your feedbacks. If you want to maintain it - connect Codeception team.
-
-Uses 'bootstrap/start.php' to launch.
+Please try it and leave your feedback.
+The original author of this module is Davert.
 
 ## Demo Project
 
@@ -16,9 +14,9 @@ Uses 'bootstrap/start.php' to launch.
 
 ## Status
 
-* Maintainer: **Davert**
+* Maintainer: **Jan-Henk Gerritsen**
 * Stability: **stable**
-* Contact: davert.codeception@mailican.com
+* Contact: janhenkgerritsen@gmail.com
 
 ## Config
 
@@ -31,7 +29,7 @@ Uses 'bootstrap/start.php' to launch.
 
 ## API
 
-* kernel - `Illuminate\Foundation\Application` instance
+* app - `Illuminate\Foundation\Application` instance
 * client - `BrowserKit` client
 
 
@@ -58,7 +56,7 @@ Takes either `UserInterface` instance or array of credentials.
  
 Opens web page by action name
 
-```php
+``` php
 <?php
 $I->amOnAction('PostsController@index');
 ?>
@@ -88,7 +86,7 @@ $I->amOnPage('/register');
  
 Opens web page using route name and parameters.
 
-```php
+``` php
 <?php
 $I->amOnRoute('posts.create');
 ?>
@@ -113,6 +111,16 @@ $I->attachFile('input[@type="file"]', 'prices.xls');
  * `param` $filename
 
 
+### callArtisan
+ 
+Calls an Artisan command and returns output as a string
+
+ * `param string` $command       The name of the command as displayed in the artisan command list
+ * `param array`  $parameters    An associative array of command arguments
+
+@return string
+
+
 ### checkOption
  
 Ticks a checkbox. For radio buttons, use the `selectOption` method instead.
@@ -124,6 +132,13 @@ $I->checkOption('#agree');
 ```
 
  * `param` $option
+
+
+### checkStartFileExists
+ 
+Make sure the Laravel start file exists.
+
+ ModuleConfig
 
 
 ### click
@@ -285,6 +300,49 @@ $I->dontSeeInField(['name' => 'search'], 'Search');
  * `param` $value
 
 
+### dontSeeInFormFields
+ 
+Checks if the array of form parameters (name => value) are not set on the form matched with
+the passed selector.
+
+``` php
+<?php
+$I->dontSeeInFormFields('form[name=myform]', [
+     'input1' => 'non-existent value',
+     'input2' => 'other non-existent value',
+]);
+?>
+```
+
+To check that an element hasn't been assigned any one of many values, an array can be passed
+as the value:
+
+``` php
+<?php
+$I->dontSeeInFormFields('.form-class', [
+     'fieldName' => [
+         'This value shouldn\'t be set',
+         'And this value shouldn\'t be set',
+     ],
+]);
+?>
+```
+
+Additionally, checkbox values can be checked with a boolean.
+
+``` php
+<?php
+$I->dontSeeInFormFields('#form-id', [
+     'checkbox1' => true,        // fails if checked
+     'checkbox2' => false,       // fails if unchecked
+]);
+?>
+```
+
+ * `param` $formSelector
+ * `param` $params
+
+
 ### dontSeeInTitle
  
 Checks that the page title does not contain the given string.
@@ -334,7 +392,7 @@ $I->dontSeeRecord('users', array('name' => 'davert'));
 ?>
 ```
 
- * `param` $model
+ * `param` $tableName
  * `param array` $attributes
 
 
@@ -351,6 +409,13 @@ $I->fillField(['name' => 'email'], 'jon@mail.com');
 
  * `param` $field
  * `param` $value
+
+
+### getApplication
+ 
+Provides access the Laravel application object.
+
+@return \Illuminate\Foundation\Application
 
 
 ### grabAttributeFrom
@@ -407,7 +472,7 @@ $category = $I->grabRecord('users', array('name' => 'davert'));
 ?>
 ```
 
- * `param` $model
+ * `param` $tableName
  * `param array` $attributes
 
 
@@ -479,7 +544,7 @@ $user_id = $I->haveRecord('users', array('name' => 'Davert'));
 ?>
 ```
 
- * `param` $model
+ * `param` $tableName
  * `param array` $attributes
 
 
@@ -554,7 +619,7 @@ $I->seeCookie('PHPSESSID');
  
 Checks that current url matches action
 
-```php
+``` php
 <?php
 $I->seeCurrentActionIs('PostsController@index');
 ?>
@@ -568,7 +633,7 @@ $I->seeCurrentActionIs('PostsController@index');
  
 Checks that current url matches route
 
-```php
+``` php
 <?php
 $I->seeCurrentRouteIs('posts.index');
 ?>
@@ -628,6 +693,56 @@ $I->seeElement(['css' => 'form input'], ['name' => 'login']);
 @return
 
 
+### seeFormErrorMessage
+ 
+Assert that specific form error message is set in the view.
+
+Useful for validation messages and generally messages array
+ e.g.
+ return `Redirect::to('register')->withErrors($validator);`
+
+Example of Usage
+
+``` php
+<?php
+$I->seeFormErrorMessage('username', 'Invalid Username');
+?>
+```
+ * `param string` $key
+ * `param string` $errorMessage
+
+
+### seeFormErrorMessages
+ 
+Assert that specific form error messages are set in the view.
+
+Useful for validation messages and generally messages array
+ e.g.
+ return `Redirect::to('register')->withErrors($validator);`
+
+Example of Usage
+
+``` php
+<?php
+$I->seeFormErrorMessages(array('username'=>'Invalid Username'));
+?>
+```
+ * `param array` $bindings
+
+
+### seeFormHasErrors
+ 
+Assert that form errors are bound to the View.
+
+``` php
+<?php
+$I->seeFormHasErrors();
+?>
+```
+
+@return bool
+
+
 ### seeInCurrentUrl
  
 Checks that current URI contains the given string.
@@ -664,9 +779,79 @@ $I->seeInField(['name' => 'search'], 'Search');
  * `param` $value
 
 
+### seeInFormFields
+ 
+Checks if the array of form parameters (name => value) are set on the form matched with the
+passed selector.
+
+``` php
+<?php
+$I->seeInFormFields('form[name=myform]', [
+     'input1' => 'value',
+     'input2' => 'other value',
+]);
+?>
+```
+
+For multi-select elements, or to check values of multiple elements with the same name, an
+array may be passed:
+
+``` php
+<?php
+$I->seeInFormFields('.form-class', [
+     'multiselect' => [
+         'value1',
+         'value2',
+     ],
+     'checkbox[]' => [
+         'a checked value',
+         'another checked value',
+     ],
+]);
+?>
+```
+
+Additionally, checkbox values can be checked with a boolean.
+
+``` php
+<?php
+$I->seeInFormFields('#form-id', [
+     'checkbox1' => true,        // passes if checked
+     'checkbox2' => false,       // passes if unchecked
+]);
+?>
+```
+
+Pair this with submitForm for quick testing magic.
+
+``` php
+<?php
+$form = [
+     'field1' => 'value',
+     'field2' => 'another value',
+     'checkbox1' => true,
+     // ...
+];
+$I->submitForm('//form[@id=my-form]', $form, 'submitButton');
+// $I->amOnPage('/path/to/form-page') may be needed
+$I->seeInFormFields('//form[@id=my-form]', $form);
+?>
+```
+
+ * `param` $formSelector
+ * `param` $params
+
+
 ### seeInSession
  
-Assert that the session has a given list of values.
+Assert that a session variable exists.
+
+``` php
+<?php
+$I->seeInSession('key');
+$I->seeInSession('key', 'value');
+?>
+```
 
  * `param`  string|array $key
  * `param`  mixed $value
@@ -744,10 +929,12 @@ Asserts that current page has 404 response status code.
 Checks that record exists in database.
 
 ``` php
+<?php
 $I->seeRecord('users', array('name' => 'davert'));
+?>
 ```
 
- * `param` $model
+ * `param` $tableName
  * `param array` $attributes
 
 
@@ -776,18 +963,33 @@ $I->seeSessionErrorMessage(array('username'=>'Invalid Username'));
 ?>
 ```
  * `param array` $bindings
+@deprecated
 
 
 ### seeSessionHasErrors
  
 Assert that the session has errors bound.
 
+``` php
+<?php
+$I->seeSessionHasErrors();
+?>
+```
+
 @return bool
+@deprecated
 
 
 ### seeSessionHasValues
  
 Assert that the session has a given list of values.
+
+``` php
+<?php
+$I->seeSessionHasValues(['key1', 'key2']);
+$I->seeSessionHasValues(['key1' => 'value1', 'key2' => 'value2']);
+?>
+```
 
  * `param`  array $bindings
 @return void
@@ -870,6 +1072,11 @@ $I->sendAjaxRequest('PUT', '/posts/7', array('title' => 'new title'));
  * `param` $params
 
 
+### setApplication
+ 
+ * `param` $app
+
+
 ### setCookie
  
 Sets a cookie with the given name and value.
@@ -891,8 +1098,8 @@ $I->setCookie('PHPSESSID', 'el4ukv0kqbvoirg7nkp4dncpk3');
 
 ### submitForm
  
-Submits the given form on the page, optionally with the given form values.
-Give the form fields values as an array.
+Submits the given form on the page, optionally with the given form
+values.  Give the form fields values as an array.
 
 Skipped fields will be filled by their values from the page.
 You don't need to click the 'Submit' button afterwards.
@@ -907,9 +1114,15 @@ Examples:
 
 ``` php
 <?php
-$I->submitForm('#login', array('login' => 'davert', 'password' => '123456'));
+$I->submitForm('#login', [
+    'login' => 'davert',
+    'password' => '123456'
+]);
 // or
-$I->submitForm('#login', array('login' => 'davert', 'password' => '123456'), 'submitButtonName');
+$I->submitForm('#login', [
+    'login' => 'davert',
+    'password' => '123456'
+], 'submitButtonName');
 
 ```
 
@@ -917,10 +1130,17 @@ For example, given this sample "Sign Up" form:
 
 ``` html
 <form action="/sign_up">
-    Login: <input type="text" name="user[login]" /><br/>
-    Password: <input type="password" name="user[password]" /><br/>
-    Do you agree to out terms? <input type="checkbox" name="user[agree]" /><br/>
-    Select pricing plan <select name="plan"><option value="1">Free</option><option value="2" selected="selected">Paid</option></select>
+    Login:
+    <input type="text" name="user[login]" /><br/>
+    Password:
+    <input type="password" name="user[password]" /><br/>
+    Do you agree to out terms?
+    <input type="checkbox" name="user[agree]" /><br/>
+    Select pricing plan:
+    <select name="plan">
+        <option value="1">Free</option>
+        <option value="2" selected="selected">Paid</option>
+    </select>
     <input type="submit" name="submitButton" value="Submit" />
 </form>
 ```
@@ -929,17 +1149,104 @@ You could write the following to submit it:
 
 ``` php
 <?php
-$I->submitForm('#userForm', array('user' => array('login' => 'Davert', 'password' => '123456', 'agree' => true)), 'submitButton');
-
+$I->submitForm(
+    '#userForm',
+    [
+        'user' => [
+            'login' => 'Davert',
+            'password' => '123456',
+            'agree' => true
+        ]
+    ],
+    'submitButton'
+);
 ```
-Note that "2" will be the submitted value for the "plan" field, as it is the selected option.
+Note that "2" will be the submitted value for the "plan" field, as it is
+the selected option.
 
-You can also emulate a JavaScript submission by not specifying any buttons in the third parameter to submitForm.
+You can also emulate a JavaScript submission by not specifying any
+buttons in the third parameter to submitForm.
 
 ```php
 <?php
-$I->submitForm('#userForm', array('user' => array('login' => 'Davert', 'password' => '123456', 'agree' => true)));
+$I->submitForm(
+    '#userForm',
+    [
+        'user' => [
+            'login' => 'Davert',
+            'password' => '123456',
+            'agree' => true
+        ]
+    ]
+);
+```
 
+Pair this with seeInFormFields for quick testing magic.
+
+``` php
+<?php
+$form = [
+     'field1' => 'value',
+     'field2' => 'another value',
+     'checkbox1' => true,
+     // ...
+];
+$I->submitForm('//form[@id=my-form]', $form, 'submitButton');
+// $I->amOnPage('/path/to/form-page') may be needed
+$I->seeInFormFields('//form[@id=my-form]', $form);
+?>
+```
+
+Parameter values can be set to arrays for multiple input fields
+of the same name, or multi-select combo boxes.  For checkboxes,
+either the string value can be used, or boolean values which will
+be replaced by the checkbox's value in the DOM.
+
+``` php
+<?php
+$I->submitForm('#my-form', [
+     'field1' => 'value',
+     'checkbox' => [
+         'value of first checkbox',
+         'value of second checkbox,
+     ],
+     'otherCheckboxes' => [
+         true,
+         false,
+         false
+     ],
+     'multiselect' => [
+         'first option value',
+         'second option value'
+     ]
+]);
+?>
+```
+
+Mixing string and boolean values for a checkbox's value is not supported
+and may produce unexpected results.
+
+Field names ending in "[]" must be passed without the trailing square 
+bracket characters, and must contain an array for its value.  This allows
+submitting multiple values with the same name, consider:
+
+```php
+$I->submitForm('#my-form', [
+    'field[]' => 'value',
+    'field[]' => 'another value', // 'field[]' is already a defined key
+]);
+```
+
+The solution is to pass an array value:
+
+```php
+// this way both values are submitted
+$I->submitForm('#my-form', [
+    'field' => [
+        'value',
+        'another value',
+    ]
+]);
 ```
 
  * `param` $selector

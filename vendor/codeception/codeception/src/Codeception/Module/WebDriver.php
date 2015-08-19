@@ -51,6 +51,8 @@ use Codeception\PHPUnit\Constraint\Page as PageConstraint;
  * * clear_cookies - Set to false to keep cookies, or set to true (default) to delete all cookies between tests.
  * * wait - Implicit wait (default 0 seconds).
  * * capabilities - Sets Selenium2 [desired capabilities](http://code.google.com/p/selenium/wiki/DesiredCapabilities). Should be a key-value array.
+ * * connection_timeout - timeout for opening a connection to remote selenium server (30 seconds by default).
+ * * request_timeout - timeout for a request to return something from remote selenium server (30 seconds by default).
  *
  * ### Example (`acceptance.suite.yml`)
  *
@@ -109,11 +111,15 @@ class WebDriver extends \Codeception\Module implements WebInterface, RemoteInter
         'wait' => 0,
         'clear_cookies' => true,
         'window_size' => false,
-        'capabilities' => array()
+        'capabilities' => array(),
+        'connection_timeout' => null,
+        'request_timeout' => null
     );
 
     protected $wd_host;
     protected $capabilities;
+    protected $connection_timeout_in_ms;
+    protected $request_timeout_in_ms;
     protected $test;
 
     /**
@@ -126,8 +132,10 @@ class WebDriver extends \Codeception\Module implements WebInterface, RemoteInter
         $this->wd_host = sprintf('http://%s:%s/wd/hub', $this->config['host'], $this->config['port']);
         $this->capabilities = $this->config['capabilities'];
         $this->capabilities[\WebDriverCapabilityType::BROWSER_NAME] = $this->config['browser'];
+        $this->connection_timeout_in_ms = $this->config['connection_timeout'] * 1000;
+        $this->request_timeout_in_ms = $this->config['request_timeout'] * 1000;
         $this->loadFirefoxProfile();
-        $this->webDriver = \RemoteWebDriver::create($this->wd_host, $this->capabilities);
+        $this->webDriver = \RemoteWebDriver::create($this->wd_host, $this->capabilities, $this->connection_timeout_in_ms, $this->request_timeout_in_ms);
         $this->webDriver->manage()->timeouts()->implicitlyWait($this->config['wait']);
         $this->initialWindowSize();
     }
@@ -237,7 +245,12 @@ class WebDriver extends \Codeception\Module implements WebInterface, RemoteInter
 
     public function _saveScreenshot($filename)
     {
-        $this->webDriver->takeScreenshot($filename);
+        if ($this->webDriver !== null) {
+            $this->webDriver->takeScreenshot($filename);
+        } else {
+            codecept_debug('WebDriver::_saveScreenshot method has been called when webDriver is not set');
+            codecept_debug(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
+        }
     }
 
     /**
@@ -1198,8 +1211,9 @@ class WebDriver extends \Codeception\Module implements WebInterface, RemoteInter
     }
 
     /**
-     * Submits the given form on the page, optionally with the given form values.
-     * Give the form fields values as an array. Note that hidden fields can't be accessed.
+     * Submits the given form on the page, optionally with the given form
+     * values.  Give the form fields values as an array. Note that hidden fields
+     * can't be accessed.
      *
      * Skipped fields will be filled by their values from the page.
      * You don't need to click the 'Submit' button afterwards.
@@ -1214,9 +1228,15 @@ class WebDriver extends \Codeception\Module implements WebInterface, RemoteInter
      *
      * ``` php
      * <?php
-     * $I->submitForm('#login', array('login' => 'davert', 'password' => '123456'));
+     * $I->submitForm('#login', [
+     *     'login' => 'davert',
+     *     'password' => '123456'
+     * ]);
      * // or
-     * $I->submitForm('#login', array('login' => 'davert', 'password' => '123456'), 'submitButtonName');
+     * $I->submitForm('#login', [
+     *     'login' => 'davert',
+     *     'password' => '123456'
+     * ], 'submitButtonName');
      *
      * ```
      *
@@ -1224,10 +1244,17 @@ class WebDriver extends \Codeception\Module implements WebInterface, RemoteInter
      *
      * ``` html
      * <form action="/sign_up">
-     *     Login: <input type="text" name="user[login]" /><br/>
-     *     Password: <input type="password" name="user[password]" /><br/>
-     *     Do you agree to out terms? <input type="checkbox" name="user[agree]" /><br/>
-     *     Select pricing plan <select name="plan"><option value="1">Free</option><option value="2" selected="selected">Paid</option></select>
+     *     Login:
+     *     <input type="text" name="user[login]" /><br/>
+     *     Password:
+     *     <input type="password" name="user[password]" /><br/>
+     *     Do you agree to out terms?
+     *     <input type="checkbox" name="user[agree]" /><br/>
+     *     Select pricing plan:
+     *     <select name="plan">
+     *         <option value="1">Free</option>
+     *         <option value="2" selected="selected">Paid</option>
+     *     </select>
      *     <input type="submit" name="submitButton" value="Submit" />
      * </form>
      * ```
@@ -1236,24 +1263,95 @@ class WebDriver extends \Codeception\Module implements WebInterface, RemoteInter
      *
      * ``` php
      * <?php
-     * $I->submitForm('#userForm', array('user' => array('login' => 'Davert', 'password' => '123456', 'agree' => true)), 'submitButton');
-     *
+     * $I->submitForm(
+     *     '#userForm',
+     *     [
+     *         'user[login]' => 'Davert',
+     *         'user[password]' => '123456',
+     *         'user[agree]' => true
+     *     ],
+     *     'submitButton'
+     * );
      * ```
-     * Note that "2" will be the submitted value for the "plan" field, as it is the selected option.
+     * Note that "2" will be the submitted value for the "plan" field, as it is
+     * the selected option.
      * 
-     * You can also emulate a JavaScript submission by not specifying any buttons in the third parameter to submitForm.
+     * Also note that this differs from PhpBrowser, in that
+     * ```'user' => [ 'login' => 'Davert' ]``` is not supported at the moment.
+     * Named array keys *must* be included in the name as above.
+     * 
+     * Pair this with seeInFormFields for quick testing magic.
+     * 
+     * ``` php
+     * <?php
+     * $form = [
+     *      'field1' => 'value',
+     *      'field2' => 'another value',
+     *      'checkbox1' => true,
+     *      // ...
+     * ];
+     * $I->submitForm('//form[@id=my-form]', $form, 'submitButton');
+     * // $I->amOnPage('/path/to/form-page') may be needed
+     * $I->seeInFormFields('//form[@id=my-form]', $form);
+     * ?>
+     * ```
+     *
+     * Parameter values must be set to arrays for multiple input fields
+     * of the same name, or multi-select combo boxes.  For checkboxes,
+     * either the string value can be used, or boolean values which will
+     * be replaced by the checkbox's value in the DOM.
+     *
+     * ``` php
+     * <?php
+     * $I->submitForm('#my-form', [
+     *      'field1' => 'value',
+     *      'checkbox' => [
+     *          'value of first checkbox',
+     *          'value of second checkbox,
+     *      ],
+     *      'otherCheckboxes' => [
+     *          true,
+     *          false,
+     *          false
+     *      ],
+     *      'multiselect' => [
+     *          'first option value',
+     *          'second option value'
+     *      ]
+     * ]);
+     * ?>
+     * ```
+     *
+     * Mixing string and boolean values for a checkbox's value is not supported
+     * and may produce unexpected results.
+     * 
+     * Field names ending in "[]" must be passed without the trailing square 
+     * bracket characters, and must contain an array for its value.  This allows
+     * submitting multiple values with the same name, consider:
      * 
      * ```php
-     * <?php
-     * $I->submitForm('#userForm', array('user' => array('login' => 'Davert', 'password' => '123456', 'agree' => true)));
-     * 
+     * $I->submitForm('#my-form', [
+     *     'field[]' => 'value',
+     *     'field[]' => 'another value', // 'field[]' is already a defined key
+     * ]);
      * ```
-     *
+     * 
+     * The solution is to pass an array value:
+     * 
+     * ```php
+     * // this way both values are submitted
+     * $I->submitForm('#my-form', [
+     *     'field' => [
+     *         'value',
+     *         'another value',
+     *     ]
+     * ]);
+     * ```
      * @param $selector
      * @param $params
      * @param $button
      */
-    public function submitForm($selector, $params, $button = null)
+    public function submitForm($selector, array $params, $button = null)
     {
         $form = $this->match($this->webDriver, $selector);
         if (empty($form)) {
@@ -1261,7 +1359,6 @@ class WebDriver extends \Codeception\Module implements WebInterface, RemoteInter
         }
         $form = reset($form);
         
-        $defaults = [];
         $fields = $form->findElements(\WebDriverBy::cssSelector('input:enabled,textarea:enabled,select:enabled,input[type=hidden]'));
         foreach ($fields as $field) {
             $fieldName = $this->getSubmissionFormFieldName($field->getAttribute('name'));

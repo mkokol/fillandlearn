@@ -11,13 +11,7 @@
 /**
  * Base class for all test runners.
  *
- * @package    PHPUnit
- * @subpackage Runner
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 abstract class PHPUnit_Runner_BaseTestRunner
 {
@@ -73,7 +67,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
         } catch (PHPUnit_Framework_Exception $e) {
             $this->runFailed($e->getMessage());
 
-            return null;
+            return;
         }
 
         try {
@@ -84,7 +78,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
                     'suite() method must be static.'
                 );
 
-                return null;
+                return;
             }
 
             try {
@@ -97,7 +91,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
                     )
                 );
 
-                return null;
+                return;
             }
         } catch (ReflectionException $e) {
             try {
@@ -129,7 +123,6 @@ abstract class PHPUnit_Runner_BaseTestRunner
 
     /**
      * Clears the status message.
-     *
      */
     protected function clearStatus()
     {

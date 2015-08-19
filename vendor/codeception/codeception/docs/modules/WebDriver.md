@@ -39,6 +39,8 @@ It allows you to run Selenium tests on a server without a GUI installed.
 * clear_cookies - Set to false to keep cookies, or set to true (default) to delete all cookies between tests.
 * wait - Implicit wait (default 0 seconds).
 * capabilities - Sets Selenium2 [desired capabilities](http://code.google.com/p/selenium/wiki/DesiredCapabilities). Should be a key-value array.
+* connection_timeout - timeout for opening a connection to remote selenium server (30 seconds by default).
+* request_timeout - timeout for a request to return something from remote selenium server (30 seconds by default).
 
 ### Example (`acceptance.suite.yml`)
 
@@ -359,6 +361,49 @@ $I->dontSeeInField(['name' => 'search'], 'Search');
 
  * `param` $field
  * `param` $value
+
+
+### dontSeeInFormFields
+ 
+Checks if the array of form parameters (name => value) are not set on the form matched with
+the passed selector.
+
+``` php
+<?php
+$I->dontSeeInFormFields('form[name=myform]', [
+     'input1' => 'non-existent value',
+     'input2' => 'other non-existent value',
+]);
+?>
+```
+
+To check that an element hasn't been assigned any one of many values, an array can be passed
+as the value:
+
+``` php
+<?php
+$I->dontSeeInFormFields('.form-class', [
+     'fieldName' => [
+         'This value shouldn\'t be set',
+         'And this value shouldn\'t be set',
+     ],
+]);
+?>
+```
+
+Additionally, checkbox values can be checked with a boolean.
+
+``` php
+<?php
+$I->dontSeeInFormFields('#form-id', [
+     'checkbox1' => true,        // fails if checked
+     'checkbox2' => false,       // fails if unchecked
+]);
+?>
+```
+
+ * `param` $formSelector
+ * `param` $params
 
 
 ### dontSeeInPageSource
@@ -819,6 +864,69 @@ $I->seeInField(['name' => 'search'], 'Search');
  * `param` $value
 
 
+### seeInFormFields
+ 
+Checks if the array of form parameters (name => value) are set on the form matched with the
+passed selector.
+
+``` php
+<?php
+$I->seeInFormFields('form[name=myform]', [
+     'input1' => 'value',
+     'input2' => 'other value',
+]);
+?>
+```
+
+For multi-select elements, or to check values of multiple elements with the same name, an
+array may be passed:
+
+``` php
+<?php
+$I->seeInFormFields('.form-class', [
+     'multiselect' => [
+         'value1',
+         'value2',
+     ],
+     'checkbox[]' => [
+         'a checked value',
+         'another checked value',
+     ],
+]);
+?>
+```
+
+Additionally, checkbox values can be checked with a boolean.
+
+``` php
+<?php
+$I->seeInFormFields('#form-id', [
+     'checkbox1' => true,        // passes if checked
+     'checkbox2' => false,       // passes if unchecked
+]);
+?>
+```
+
+Pair this with submitForm for quick testing magic.
+
+``` php
+<?php
+$form = [
+     'field1' => 'value',
+     'field2' => 'another value',
+     'checkbox1' => true,
+     // ...
+];
+$I->submitForm('//form[@id=my-form]', $form, 'submitButton');
+// $I->amOnPage('/path/to/form-page') may be needed
+$I->seeInFormFields('//form[@id=my-form]', $form);
+?>
+```
+
+ * `param` $formSelector
+ * `param` $params
+
+
 ### seeInPageSource
  
 Checks that the page source contains the given string.
@@ -944,8 +1052,9 @@ $I->setCookie('PHPSESSID', 'el4ukv0kqbvoirg7nkp4dncpk3');
 
 ### submitForm
  
-Submits the given form on the page, optionally with the given form values.
-Give the form fields values as an array. Note that hidden fields can't be accessed.
+Submits the given form on the page, optionally with the given form
+values.  Give the form fields values as an array. Note that hidden fields
+can't be accessed.
 
 Skipped fields will be filled by their values from the page.
 You don't need to click the 'Submit' button afterwards.
@@ -960,9 +1069,15 @@ Examples:
 
 ``` php
 <?php
-$I->submitForm('#login', array('login' => 'davert', 'password' => '123456'));
+$I->submitForm('#login', [
+    'login' => 'davert',
+    'password' => '123456'
+]);
 // or
-$I->submitForm('#login', array('login' => 'davert', 'password' => '123456'), 'submitButtonName');
+$I->submitForm('#login', [
+    'login' => 'davert',
+    'password' => '123456'
+], 'submitButtonName');
 
 ```
 
@@ -970,10 +1085,17 @@ For example, given this sample "Sign Up" form:
 
 ``` html
 <form action="/sign_up">
-    Login: <input type="text" name="user[login]" /><br/>
-    Password: <input type="password" name="user[password]" /><br/>
-    Do you agree to out terms? <input type="checkbox" name="user[agree]" /><br/>
-    Select pricing plan <select name="plan"><option value="1">Free</option><option value="2" selected="selected">Paid</option></select>
+    Login:
+    <input type="text" name="user[login]" /><br/>
+    Password:
+    <input type="password" name="user[password]" /><br/>
+    Do you agree to out terms?
+    <input type="checkbox" name="user[agree]" /><br/>
+    Select pricing plan:
+    <select name="plan">
+        <option value="1">Free</option>
+        <option value="2" selected="selected">Paid</option>
+    </select>
     <input type="submit" name="submitButton" value="Submit" />
 </form>
 ```
@@ -982,19 +1104,90 @@ You could write the following to submit it:
 
 ``` php
 <?php
-$I->submitForm('#userForm', array('user' => array('login' => 'Davert', 'password' => '123456', 'agree' => true)), 'submitButton');
-
+$I->submitForm(
+    '#userForm',
+    [
+        'user[login]' => 'Davert',
+        'user[password]' => '123456',
+        'user[agree]' => true
+    ],
+    'submitButton'
+);
 ```
-Note that "2" will be the submitted value for the "plan" field, as it is the selected option.
+Note that "2" will be the submitted value for the "plan" field, as it is
+the selected option.
 
-You can also emulate a JavaScript submission by not specifying any buttons in the third parameter to submitForm.
+Also note that this differs from PhpBrowser, in that
+```'user' => [ 'login' => 'Davert' ]``` is not supported at the moment.
+Named array keys *must* be included in the name as above.
+
+Pair this with seeInFormFields for quick testing magic.
+
+``` php
+<?php
+$form = [
+     'field1' => 'value',
+     'field2' => 'another value',
+     'checkbox1' => true,
+     // ...
+];
+$I->submitForm('//form[@id=my-form]', $form, 'submitButton');
+// $I->amOnPage('/path/to/form-page') may be needed
+$I->seeInFormFields('//form[@id=my-form]', $form);
+?>
+```
+
+Parameter values must be set to arrays for multiple input fields
+of the same name, or multi-select combo boxes.  For checkboxes,
+either the string value can be used, or boolean values which will
+be replaced by the checkbox's value in the DOM.
+
+``` php
+<?php
+$I->submitForm('#my-form', [
+     'field1' => 'value',
+     'checkbox' => [
+         'value of first checkbox',
+         'value of second checkbox,
+     ],
+     'otherCheckboxes' => [
+         true,
+         false,
+         false
+     ],
+     'multiselect' => [
+         'first option value',
+         'second option value'
+     ]
+]);
+?>
+```
+
+Mixing string and boolean values for a checkbox's value is not supported
+and may produce unexpected results.
+
+Field names ending in "[]" must be passed without the trailing square 
+bracket characters, and must contain an array for its value.  This allows
+submitting multiple values with the same name, consider:
 
 ```php
-<?php
-$I->submitForm('#userForm', array('user' => array('login' => 'Davert', 'password' => '123456', 'agree' => true)));
-
+$I->submitForm('#my-form', [
+    'field[]' => 'value',
+    'field[]' => 'another value', // 'field[]' is already a defined key
+]);
 ```
 
+The solution is to pass an array value:
+
+```php
+// this way both values are submitted
+$I->submitForm('#my-form', [
+    'field' => [
+        'value',
+        'another value',
+    ]
+]);
+```
  * `param` $selector
  * `param` $params
  * `param` $button
@@ -1192,6 +1385,5 @@ $I->waitForText('foo', 30, '.title'); // secs
  * `param int` $timeout seconds
  * `param null` $selector
  \Exception
- * `internal param string` $element
 
 <p>&nbsp;</p><div class="alert alert-warning">Module reference is taken from the source code. <a href="https://github.com/Codeception/Codeception/tree/2.0/src/Codeception/Module/WebDriver.php">Help us to improve documentation. Edit module reference</a></div>

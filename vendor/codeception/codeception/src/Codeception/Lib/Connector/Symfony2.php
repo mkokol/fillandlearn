@@ -10,11 +10,11 @@ class Symfony2 extends \Symfony\Component\HttpKernel\Client
     protected function doRequest($request)
     {
         $services = [];
-        if (static::$hasPerformedRequest) {
+        if (self::$hasPerformedRequest) {
             $services = $this->persistServices();
-            $this->kernel->shutdown();
+            $this->kernel = clone $this->kernel;
         } else {
-            static::$hasPerformedRequest = true;
+            self::$hasPerformedRequest = true;
         }
         $this->kernel->boot();
 

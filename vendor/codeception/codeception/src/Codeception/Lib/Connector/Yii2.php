@@ -54,7 +54,6 @@ class Yii2 extends Client
             $_GET = $_REQUEST;
         } else {
             $_POST = $_REQUEST;
-            $_POST[Yii::$app->getRequest()->methodParam] = $request->getMethod();
         }
 
         $uri = $request->getUri();
@@ -72,11 +71,6 @@ class Yii2 extends Client
         $app = $this->startApp();
 
         $app->getResponse()->on(YiiResponse::EVENT_AFTER_PREPARE, array($this, 'processResponse'));
-
-        // disabling logging. Logs are slowing test execution down
-        foreach ($app->log->targets as $target) {
-            $target->enabled = false;
-        }
 
         $this->headers    = array();
         $this->statusCode = null;
