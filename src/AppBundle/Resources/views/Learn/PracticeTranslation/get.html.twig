@@ -48,12 +48,6 @@
         border-bottom: none;
     }
 
-    .progress-msg {
-        line-height: 14px;
-        font-size: 16px;
-        color: #333333;
-    }
-
     .progress-msg span {
         display: block;
     }
@@ -70,6 +64,24 @@
     #edit-word {
         display: none;
     }
+
+    .progress {
+        margin-bottom: 0;
+        border-radius: 0;
+    }
+    .progress .progress-bar {
+        text-align: right;
+        padding-right: 5px;
+    }
+    .status-inside{
+        display: none;
+        font-size: 12px;
+    }
+    .status-outside {
+        font-size: 12px;
+        padding-left: 5px;
+        line-height: 20px;
+    }
 </style>
 
 <div class="modal-dialog">
@@ -81,9 +93,19 @@
             <h4 class="modal-title" id="myModalLabel">Practice Translation.</h4>
         </div>
         <div id="practice-words">
+            <div class="progress" data-total-word-number="{{ sheetWords|length }}">
+                <div class="progress-bar progress-bar-success" role="progressbar" style="width:0%">
+                    <span class="status-inside">
+                        <span class="current-word-number">1</span> (<span id="total-word-number">{{ sheetWords|length }}</span>)
+                    </span>
+                </div>
+                <span class="status-outside">
+                    <span class="current-word-number">1</span> (<span>{{ sheetWords|length }}</span>)
+                </span>
+            </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-9 col-xs-9">
+                    <div class="col-md-12 col-xs-12">
                         {% for sheetWord in sheetWords|slice(0, 1) %}
                             <div class="panel panel-default">
                                 <div class="panel-heading">
@@ -117,22 +139,12 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <div class="col-md-3 col-xs-3">
-                        <div class="learning-progress" data-width="100" data-height="100"
-                             data-fgColor="#04b100" data-thickness=".2" data-readOnly=true>
-                        <span class="progress-msg">
-                            <span id="current-word-number">1</span>
-                            <span>{{ sheetWords|length }}</span>
-                        </span>
-                        </div>
-                        <div style="display: inline-block; width: 100px;">
-                            <span id="success-count" class="badge alert-success">0</span>
-                            <span id="error-count" class="badge alert-danger pull-right">0</span>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer">
+                <div style="float: left; line-height: 35px; font-size: 12px;">
+                    <span id="success-count" class="badge alert-success">0</span> / <span id="error-count" class="badge alert-danger">0</span>
+                </div>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -157,24 +169,24 @@
     });
     {% endfor %}
 
-    $("#input-translation").keypress(function (e) {
+    $('#input-translation').keypress(function (e) {
         if (e.which == 13) {
-            $("#next-word").click();
+            $('#next-word').click();
         }
 
         return;
     });
 
-    $("#next-word").click(function () {
+    $('#next-word').click(function () {
         if ((
-                $("#input-translation").val() == ""
+                $('#input-translation').val() == ''
                 && (
-                    $("#input-translation-group").hasClass("has-error")
-                    || $("#input-translation-group").hasClass("has-success")
+                    $('#input-translation-group').hasClass('has-error')
+                    || $('#input-translation-group').hasClass('has-success')
                 )
             )
-            || $("#input-translation-group").hasClass("has-error")
-            || $("#input-translation-group").hasClass("has-success")
+            || $('#input-translation-group').hasClass('has-error')
+            || $('#input-translation-group').hasClass('has-success')
         ) {
             showNextWord();
             $('#edit-word').hide();
@@ -182,31 +194,35 @@
         }
 
         var isCorrect = false;
+        var inputtedTranslation = $('#input-translation').val().charAt(0).toLowerCase() + $('#input-translation').val().slice(1);
+
         for (var i = 0; i < words[word].translations.length; i++) {
             var translation = words[word].translations[i].replace('&#039;', '\'');
-            if (translation == $("#input-translation").val()) {
+
+            if (translation == inputtedTranslation) {
                 isCorrect = true;
             }
         }
+
         showTranslations();
         $('#edit-word').show();
 
         if (isCorrect) {
-            $("#input-translation-group").addClass("has-success");
-            $("#success-count").text(parseInt($("#success-count").text()) + 1);
+            $('#input-translation-group').addClass('has-success');
+            $('#success-count').text(parseInt($('#success-count').text()) + 1);
             saveWordStatus(words[word].id, 1);
         } else {
-            $("#input-translation-group").addClass("has-error");
+            $('#input-translation-group').addClass('has-error');
             saveWordStatus(words[word].id, 0);
-            $("#error-count").text(parseInt($("#error-count").text()) + 1);
+            $('#error-count').text(parseInt($('#error-count').text()) + 1);
         }
 
         return;
     });
 
-    $("#edit-word").click(function () {
+    $('#edit-word').click(function () {
         $.ajax({
-            method: "GET",
+            method: 'GET',
             url: '/tree/vocabulary/' + $(this).data('vocabulary-id') + '/sheet/word/' + words[word].id + '/edit/form/',
             success: function (data) {
                 $('#practice-words').hide();
@@ -215,7 +231,7 @@
                     dataType: 'json',
                     success: function (data) {
                         if (data.status == 'success') {
-                            $("#word").text($('#word_word').val());
+                            $('#word').text($('#word_word').val());
                             var translations = [];
                             $.each($('#translations input[type=text]'), function(key,value){
                                 translations.push($(value).val());
@@ -237,38 +253,41 @@
         for (var i = 0; i < words[word].translations.length; i++) {
             translations += '<li>' + words[word].translations[i] + '</li>';
         }
-        $("#view-translations").html(translations).show();
+        $('#view-translations').html(translations).show();
     }
 
     function showNextWord() {
-        $(".learning-progress").val(word + 1).trigger('change');
-        $("#current-word-number").html(word + 1);
+        var progress = (word + 1) / $('.progress').data('total-word-number') * 100;
+
+        if(progress < 50) {
+            $('.status-inside').hide();
+            $('.status-outside').show();
+        } else {
+            $('.status-inside').show();
+            $('.status-outside').hide();
+        }
+
+        $('.progress-bar').css({width: progress + '%'});
+        $('.learning-progress').val(word + 1).trigger('change');
+        $('.current-word-number').html(word + 1);
+
         if (word < words.length) {
             word++;
-            $("#view-translations").hide();
-            $("#input-translation-group").removeClass("has-success").removeClass("has-error");
-            $("#word").text(words[word].word);
-            $("#input-translation").val('');
+            $('#view-translations').hide();
+            $('#input-translation-group').removeClass('has-success').removeClass('has-error');
+            $('#word').text(words[word].word);
+            $('#input-translation').val('');
         }
     }
 
     function saveWordStatus(id, status) {
         $.ajax({
-            method: "POST",
-            url: "/tree/sheet-word/" + id + "/status/" + status + "/add/"
+            method: 'POST',
+            url: '/tree/sheet-word/' + id + '/status/' + status + '/add/'
         });
     }
 
-    $(".learning-progress").knob({
-        width: 100,
-        height: 100,
-        min: 0,
-        max: {{ sheetWords|length }},
-        easing: 'swing',
-        readOnly: true
-    });
-
-    $("#input-translation").focus();
+    $('#input-translation').focus();
 
     function modalRemove() {
         location.reload();

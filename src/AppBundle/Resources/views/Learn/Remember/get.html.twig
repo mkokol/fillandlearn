@@ -99,9 +99,8 @@
                         </ul>
                     {% endfor %}
                 </div>
-                <div class="col-md-3 col-xs-3">
-                    <div class="timer" data-width="100" data-height="100"
-                         data-fgColor="#04b100" data-thickness=".2">
+                <div class="col-md-3 col-xs-3" style="min-height: 100px;">
+                    <div class="timer" data-width="100%" data-fgColor="#04b100" data-thickness=".2">
                         <span class="timer-msg">
                             <span id="current-word-number">1</span>
                             <span>{{ sheetWords|length }}</span>
@@ -135,8 +134,7 @@
     {% endfor %}
 
     $(".timer").knob({
-        width: 100,
-        height: 100,
+        width: '100%',
         min: 0,
         max: 360
     });

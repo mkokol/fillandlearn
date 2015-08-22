@@ -20,8 +20,8 @@
 
         .header {
             margin-bottom: 30px;
+            padding-bottom: 1px;
             border-bottom: 1px solid #e5e5e5;
-            padding-bottom: 20px;
         }
 
         .header, .footer {
@@ -33,6 +33,40 @@
             line-height: 40px;
             margin-bottom: 0;
             margin-top: 0;
+        }
+
+        .header .nav-tabs {
+            border: none;
+            margin: 0;
+        }
+        .header .nav-tabs > li {
+            margin-right: 2px;
+            border-bottom: 4px solid #ffffff;
+        }
+        .header .nav-tabs > li > a {
+            border: 0;
+            margin-right: 0;
+            color: #737373;
+        }
+        .header .nav-tabs > li:hover {
+            border-bottom: 4px solid #cbcbcb;
+        }
+        .header .nav-tabs > li:hover > a {
+            border: 0;
+            background: none !important;
+            color: #333333;
+        }
+        .header .nav-tabs > li.active {
+            border-bottom: 4px solid #e5e5e5;
+            background: none !important;
+            position: relative;
+        }
+        .header .nav-tabs > li.active > a {
+            border: 0;
+            color: #333333;
+        }
+        .header .nav-tabs > li.active > a > i {
+            color: #404040;
         }
 
         .footer {
@@ -47,8 +81,10 @@
 <body>
     <div class="container">
         <div class="header clearfix">
+            <h3 class="text-muted visible-xs-block pull-left">F&L</h3>
+            <h3 class="text-muted hidden-xs pull-left">Fill & Learn</h3>
             <nav>
-                <ul class="nav nav-pills pull-right">
+                <ul class="nav nav-tabs pull-right">
                     {% set route = app.request.attributes.get('_route') %}
                     <li {% if route == 'home' %}class="active"{% endif %} role="presentation">
                         <a href="{{ path('home') }}">Home</a>
@@ -70,8 +106,6 @@
                     {% endif %}
                 </ul>
             </nav>
-            <h3 class="text-muted visible-xs-block">F&L</h3>
-            <h3 class="text-muted hidden-xs">Fill & Learn</h3>
         </div>
 
         {% block content %}{% endblock %}
