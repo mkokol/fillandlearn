@@ -9,6 +9,8 @@ env.key_filename = '../p/mk-ireland.pem'
 def deploy():
     local("php app/console cache:clear --env=dev --no-debug")
     local("php app/console cache:clear --env=prod --no-debug")
+    local("php composer.phar install --no-dev --optimize-autoloader")
+
     local("tar czf update-fill-and-learn.tar.gz app bin build components logs src vendor web build.xml ")
 
     run("sudo rm -rf /var/www/fillandlearn.com.new");
@@ -25,6 +27,7 @@ def deploy():
         run("chmod 777 -Rf ./app/logs")
         run("chmod 777 -Rf ./logs")
         run("php app/console assetic:dump --env=prod --no-debug")
+        run("php vendor/phing/phing/bin/phing.php -Denv=prod")
 
 
     run("mv /var/www/fillandlearn.com /var/www/fillandlearn.com.old");
@@ -37,6 +40,4 @@ def deploy():
     run("sudo service php5-fpm restart")
 
     local("rm update-fill-and-learn.tar.gz")
-
-
-# composer install --no-dev --optimize-autoloader
+    local("php composer.phar install")

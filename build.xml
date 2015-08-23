@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Vocabulary Builder" default="main" basedir=".">
+<project name="Fill and Learn" default="main" basedir=".">
 
-	<property file="./build/templates/default.properties" />
+    <if>
+        <not><isset property="env" /></not>
+        <then><property name="env" value="dev" /></then>
+    </if>
 
-	<target name="main">
+    <property file="./build/properties/${env}.ini" />
+
+    <php function="preg_replace" returnProperty="consoleSrcPath">
+        <param value="/(Dropbox\ \(Personal\))+/"/>
+        <param value="Dropbox\\ \\(Personal\\)"/>
+        <param value="${project.basedir}"/>
+    </php>
+
+    <target name="main">
         <echo message="+------------------------------------------+"/>
-        <echo message="| Building The Project.                    |"/>
+        <echo message="| Fill and Learn.                          |"/>
         <echo message="+------------------------------------------+"/>
 
         <phing phingfile="${project.basedir}/build/phing/logs.xml" target="logs" />
+        <phing phingfile="${project.basedir}/build/phing/configuration.xml" target="configuration" />
         <phing phingfile="${project.basedir}/build/phing/database.xml" target="database" />
     </target>
 

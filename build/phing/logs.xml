@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="logs">
+<project name="logs" default="logs">
  
     <target name="logs">
         <echo msg="Creating logs directory..." />
@@ -8,5 +8,5 @@
         <echo msg="Creating build.log file..." />
         <touch file="${project.basedir}/logs/build.log" />
     </target>
- 
+
 </project>

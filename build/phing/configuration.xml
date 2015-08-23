@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="configuration" default="configuration">
+
+    <target name="configuration">
+        <echo msg="Building configuration..." />
+
+        <copy todir="${project.basedir}/app/config/" overwrite="true">
+            <filelist dir="${project.basedir}/app/config/" files="parameters.template.yml" />
+            <mapper type="regexp" from="^parameters.yml.dist$" to="parameters.yml"/>
+
+            <filterchain>
+                <expandproperties />
+            </filterchain>
+        </copy>
+    </target>
+
+</project>

@@ -5,11 +5,13 @@
 /app/logs/*
 !app/logs/.gitkeep
 /app/phpunit.xml
+!/build
+/build/properties/*
+/build/database/*
 /bin/
 /composer.phar
 /web/bundles/
 /vendor/**/.git
 logs
-build/database
 .DS_Store
 .idea

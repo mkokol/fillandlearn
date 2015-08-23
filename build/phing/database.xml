@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project default="database">
+<project name="database" default="database">
  
     <target name="database">
 
@@ -8,22 +8,14 @@
         <tstamp/>
 
         <echo msg="host: ${db.host}" />
+        <echo msg="mysql -h${db.host} -u${db.user} -p${db.password} &lt; ${consoleSrcPath}/build/templates/database.sql" />
 
         <exec
-            command="mysql -h${db.host} -u${db.user} -p${db.password} &lt; ${project.basedir}/build/templates/database.sql"
+            command="mysql -h${db.host} -u${db.user} -p${db.password} &lt; ${consoleSrcPath}/build/templates/database.sql"
             dir="${project.basedir}"
             checkreturn="true" />
 
-        <echo msg="Deploying database..." />
-
-        <property
-            name="build.dbdeploy.deployfile"
-            value="${project.basedir}/build/database/deploy-db-${DSTAMP}${TSTAMP}.sql" />
-        <property
-            name="build.dbdeploy.undofile"
-            value="${project.basedir}/build/database/undo-db-${DSTAMP}${TSTAMP}.sql" />
- 
-        <echo message="Database undo file ${build.dbdeploy.undofile}" />
+        <echo msg="Prepare database deploy..." />
  
         <dbdeploy
             url="mysql:host=${db.host};dbname=${db.database}"
@@ -31,11 +23,13 @@
             password="${db.password}"
             checkall="true"
             dir="${project.basedir}/build/patches/"
-            outputfile="${build.dbdeploy.deployfile}"
-            undooutputfile="${build.dbdeploy.undofile}" />
+            outputfile="${project.basedir}/build/database/deploy-db-${DSTAMP}${TSTAMP}.sql"
+            undooutputfile="${project.basedir}/build/database/undo-db-${DSTAMP}${TSTAMP}.sql" />
+
+        <echo msg="Deploying database..." />
 
         <exec
-            command="mysql -h${db.host} -u${db.user} -p${db.password} ${db.database} &lt; ${build.dbdeploy.deployfile}"
+            command="mysql -h${db.host} -u${db.user} -p${db.password} ${db.database} &lt; ${consoleSrcPath}/build/database/deploy-db-${DSTAMP}${TSTAMP}.sql"
             dir="${project.basedir}"
             checkreturn="true" />
 
