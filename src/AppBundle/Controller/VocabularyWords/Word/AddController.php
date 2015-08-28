@@ -4,7 +4,6 @@ namespace AppBundle\Controller\VocabularyWords\Word;
 
 use AppBundle\Entity\Sheet;
 use AppBundle\Entity\SheetWord;
-use AppBundle\Entity\SheetWordTranslation;
 use AppBundle\Entity\Translation;
 use AppBundle\Entity\Vocabulary;
 use AppBundle\Entity\Word;

@@ -5,7 +5,7 @@ use CommonBundle\Entity\CreatedOnEntityTrait;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use VocabularyBuilder\Learning\Statistic;
+use FillAndLearn\Learning\Statistic;
 
 /**
  * @ORM\Entity

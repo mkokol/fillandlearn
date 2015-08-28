@@ -83,29 +83,7 @@
         <div class="header clearfix">
             <h3 class="text-muted visible-xs-block pull-left">F&L</h3>
             <h3 class="text-muted hidden-xs pull-left">Fill & Learn</h3>
-            <nav>
-                <ul class="nav nav-tabs pull-right">
-                    {% set route = app.request.attributes.get('_route') %}
-                    <li {% if route == 'home' %}class="active"{% endif %} role="presentation">
-                        <a href="{{ path('home') }}">Home</a>
-                    </li>
-                    {% if not is_granted('ROLE_USER') %}
-                        <li {% if route == 'user_registration' %}class="active"{% endif %} role="presentation">
-                            <a href="{{ path('user_registration') }}">Registration</a>
-                        </li>
-                        <li {% if route == 'user_login' %}class="active"{% endif %} role="presentation">
-                            <a href="{{ path('user_login') }}">Log in</a>
-                        </li>
-                    {% else %}
-                        <li {% if route == 'vocabulary' %}class="active"{% endif %} role="presentation">
-                            <a href="{{ path('vocabulary') }}">Vocabulary</a>
-                        </li>
-                        <li {% if route == 'user_logout' %}class="active"{% endif %} role="presentation">
-                            <a href="{{ path('user_logout') }}">Logout</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
+            {{ render(controller('AppBundle:Common/Menu:get', {})) }}
         </div>
 
         {% block content %}{% endblock %}

@@ -1,0 +1,39 @@
+<nav>
+    <ul class="nav nav-tabs pull-right">
+        {% set route = app.request.attributes.get('_route') %}
+        <li {% if route == 'home' %}class="active"{% endif %} role="presentation">
+            <a href="{{ path('home') }}">Home</a>
+        </li>
+        {% if not is_granted('ROLE_USER') %}
+            <li {% if route == 'user_registration' %}class="active"{% endif %} role="presentation">
+                <a href="{{ path('user_registration') }}">Registration</a>
+            </li>
+            <li {% if route == 'user_login' %}class="active"{% endif %} role="presentation">
+                <a href="{{ path('user_login') }}">Log in</a>
+            </li>
+        {% else %}
+            <li {% if route == 'vocabulary' %}class="active"{% endif %} role="presentation" class="dropdown">
+                <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    Vocabulary <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    {% for vocabulary in vocabularies %}
+                        <li>
+                            <a href="{{ path('vocabulary_view', {'vocabularyId': vocabulary.vocabularyId}) }}">
+                                {{ vocabulary.primaryLanguage.name }} - {{ vocabulary.secondaryLanguage.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    <li>
+                        <a href="{{ path('vocabulary') }}">
+                            Manage Vocabulary
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li {% if route == 'user_logout' %}class="active"{% endif %} role="presentation">
+                <a href="{{ path('user_logout') }}">Logout</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>

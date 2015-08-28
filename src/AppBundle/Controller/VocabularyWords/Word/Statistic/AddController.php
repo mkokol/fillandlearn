@@ -2,21 +2,13 @@
 
 namespace AppBundle\Controller\VocabularyWords\Word\Statistic;
 
-use AppBundle\Entity\Sheet;
 use AppBundle\Entity\SheetWord;
-use AppBundle\Entity\SheetWordTranslation;
-use AppBundle\Entity\Translation;
-use AppBundle\Entity\Vocabulary;
-use AppBundle\Entity\Word;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use VocabularyBuilder\Learning\Statistic;
 
 class AddController extends Controller
 {

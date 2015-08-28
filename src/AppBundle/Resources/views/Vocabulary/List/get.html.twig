@@ -6,10 +6,8 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Title</th>
-            <th>primaryLanguage</th>
-            <th>secondaryLanguage</th>
-            <th></th>
+            <th>Vocabulary</th>
+            <th style="width: 120px;"></th>
         </tr>
         </thead>
         <tbody>
@@ -17,11 +15,9 @@
             <tr>
                 <td>
                     <a href="{{ path('vocabulary_view', {'vocabularyId': vocabulary.vocabularyId}) }}">
-                        {{ vocabulary.title }}
+                        {{ vocabulary.primaryLanguage.name }} - {{ vocabulary.secondaryLanguage.name }}
                     </a>
                 </td>
-                <td>{{ vocabulary.primaryLanguage.name }}</td>
-                <td>{{ vocabulary.secondaryLanguage.name }}</td>
                 <td style="text-align: right;">
                     {% spaceless %}
                     <a class="load-modal" href="#"

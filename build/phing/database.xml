@@ -8,10 +8,10 @@
         <tstamp/>
 
         <echo msg="host: ${db.host}" />
-        <echo msg="mysql -h${db.host} -u${db.user} -p${db.password} &lt; ${consoleSrcPath}/build/templates/database.sql" />
+        <echo msg="mysql -h${db.host} -u${db.user} -p'${db.password}' &lt; ${consoleSrcPath}/build/templates/database.sql" />
 
         <exec
-            command="mysql -h${db.host} -u${db.user} -p${db.password} &lt; ${consoleSrcPath}/build/templates/database.sql"
+            command="mysql -h${db.host} -u${db.user} -p'${db.password}' &lt; ${consoleSrcPath}/build/templates/database.sql"
             dir="${project.basedir}"
             checkreturn="true" />
 
@@ -29,7 +29,7 @@
         <echo msg="Deploying database..." />
 
         <exec
-            command="mysql -h${db.host} -u${db.user} -p${db.password} ${db.database} &lt; ${consoleSrcPath}/build/database/deploy-db-${DSTAMP}${TSTAMP}.sql"
+            command="mysql -h${db.host} -u${db.user} -p'${db.password}' ${db.database} &lt; ${consoleSrcPath}/build/database/deploy-db-${DSTAMP}${TSTAMP}.sql"
             dir="${project.basedir}"
             checkreturn="true" />
 

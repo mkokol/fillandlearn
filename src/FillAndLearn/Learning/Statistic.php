@@ -1,5 +1,5 @@
 <?php
-namespace VocabularyBuilder\Learning;
+namespace FillAndLearn\Learning;
 
 use Component\Serializer\SerializableTrait;
 

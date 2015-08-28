@@ -9,12 +9,12 @@ env.key_filename = '../p/mk-ireland.pem'
 def deploy():
     local("php app/console cache:clear --env=dev --no-debug")
     local("php app/console cache:clear --env=prod --no-debug")
-    local("php composer.phar install --no-dev --optimize-autoloader")
+    local("php composer.phar install --optimize-autoloader")
 
     local("tar czf update-fill-and-learn.tar.gz app bin build components logs src vendor web build.xml ")
 
-    run("sudo rm -rf /var/www/fillandlearn.com.new");
-    run("sudo rm -rf /var/www/fillandlearn.com.old");
+    run("sudo rm -rf /var/www/fillandlearn.com.new")
+    run("sudo rm -rf /var/www/fillandlearn.com.old")
     run("mkdir /var/www/fillandlearn.com.new");
     put("./update-fill-and-learn.tar.gz", "/var/www/fillandlearn.com.new/")
 
@@ -27,17 +27,18 @@ def deploy():
         run("chmod 777 -Rf ./app/logs")
         run("chmod 777 -Rf ./logs")
         run("php app/console assetic:dump --env=prod --no-debug")
-        run("php vendor/phing/phing/bin/phing.php -Denv=prod")
 
+    run("mv /var/www/fillandlearn.com /var/www/fillandlearn.com.old")
+    run("mv /var/www/fillandlearn.com.new /var/www/fillandlearn.com")
 
-    run("mv /var/www/fillandlearn.com /var/www/fillandlearn.com.old");
-    run("mv /var/www/fillandlearn.com.new /var/www/fillandlearn.com");
+    run("chown www-data:www-data -Rf /var/www/fillandlearn.com")
 
     with cd("/var/www/fillandlearn.com/"):
-        run("php vendor/phing/phing/bin/phing.php")
+        run("php vendor/phing/phing/bin/phing.php -Denv=prod")
 
     run("php  -r 'opcache_reset();'")
     run("sudo service php5-fpm restart")
 
     local("rm update-fill-and-learn.tar.gz")
     local("php composer.phar install")
+    local("php vendor/phing/phing/bin/phing.php -Denv=dev")
