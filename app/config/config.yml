@@ -65,10 +65,6 @@ assetic:
                 - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap.css
                 - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/css/bootstrap-theme.css
             filters: [cssrewrite]
-        common_css:
-            inputs:
-                - @AppBundle/Resources/public/css/common.css
-            filters: [cssrewrite]
 
         jquery:
             inputs:
@@ -82,9 +78,6 @@ assetic:
         bootstrap_js:
             inputs:
                 - %kernel.root_dir%/../vendor/twitter/bootstrap/dist/js/bootstrap.js
-        common_js:
-            inputs:
-                - @AppBundle/Resources/public/js/common.js
 
 doctrine:
     dbal:
