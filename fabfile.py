@@ -31,7 +31,7 @@ def deploy():
         run("php -r 'opcache_reset();'")
         run("php app/console assetic:dump --env=prod --no-debug")
         run("php vendor/phing/phing/bin/phing.php -Denv=prod")
-        run("php composer.phar install --optimize-autoloader")
+        run("php composer.phar dump-autoload --optimize")
         run("sudo rm -rf app/cache/prod")
         run("sudo rm -rf app/cache/dev")
 
