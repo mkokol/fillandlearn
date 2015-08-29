@@ -49,13 +49,6 @@ class Vocabulary
     private $secondaryLanguage;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string")
-     */
-    private $title;
-
-    /**
      * @var Folder[]
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Folder", mappedBy="vocabulary")
@@ -135,18 +128,6 @@ class Vocabulary
     public function getSecondaryLanguageId()
     {
         return $this->secondaryLanguage->getLanguageId();
-    }
-
-    /** @return string */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /** @param string $title */
-    public function setTitle($title)
-    {
-        $this->title = $title;
     }
 
     /** @return bool */

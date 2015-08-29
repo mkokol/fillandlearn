@@ -19,7 +19,6 @@
         <echo message="| Fill and Learn.                          |"/>
         <echo message="+------------------------------------------+"/>
 
-        <phing phingfile="${project.basedir}/build/phing/logs.xml" target="logs" />
         <phing phingfile="${project.basedir}/build/phing/configuration.xml" target="configuration" />
         <phing phingfile="${project.basedir}/build/phing/database.xml" target="database" />
     </target>

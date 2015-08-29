@@ -12,15 +12,6 @@ class VocabularyFormType extends AbstractType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('title', 'text', [
-                'label'      => 'Title',
-                'label_attr' => [
-                    'placeholder' => 'Title'
-                ],
-                'attr'       => [
-                    'class' => 'form-control',
-                ]
-            ])
             ->add('primaryLanguage', 'choice_language')
             ->add('secondaryLanguage', 'choice_language');
     }
